@@ -1,3 +1,26 @@
 spring:
   application:
     name: aimaginarium
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/gallery-db
+    username: dev
+    password: dev
+
+  flyway:
+    enabled: true
+    default-schema: dev
+
+  jpa:
+    properties:
+      hibernate:
+        default_schema: dev
+
+logging:
+  level:
+    org.springframework: info
+    com.example.demospringdokerisedpostgres: info
+
+server:
+  port: 8888
