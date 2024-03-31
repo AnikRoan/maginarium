@@ -3,10 +3,36 @@ version: '3.8'
 
 networks:
   backend:
-    name: gallery
+    name: aimaginarium
     driver: bridge
 
 services:
+  # App backend service
+  app:
+    image: aimaginarium-app
+    # Give the container the name web-app. You can change to something else.
+    container_name: aimaginarium-app
+    # Build based on Dockerfile at the same directory
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+    # This service depends on postgres. Start that first.
+    depends_on:
+      - db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "--quiet"]
+      interval: 1m
+      timeout: 10s
+      retries: 5
+    environment:
+      - SERVER_PORT=8181
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db/gallery-db
+    stdin_open: true
+    networks:
+      - backend
+
   # Database Service (Postgres)
   db:
     # Use the Docker Image postgres. This will pull the 16.2 version.
