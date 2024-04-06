@@ -6,6 +6,6 @@ CREATE TABLE users_gallery
 
     created_at timestamp,
     FOREIGN KEY ("users_id") REFERENCES "users" ("id")
-        ON UPDATE CASCADE ON DELETE CASCADE,
+        ON UPDATE CASCADE ON DELETE CASCADE
 
 );

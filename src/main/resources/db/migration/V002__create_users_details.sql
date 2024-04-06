@@ -1,8 +1,7 @@
 CREATE TABLE users_details
 (
     users_id   integer,
-    first_name varchar,
-    last_name  varchar,
+    full_name  varchar,
     login      varchar,
     created_at timestamp,
     FOREIGN KEY (users_id) REFERENCES users (id)
