@@ -1,0 +1,40 @@
+package com.aimaginarium.models;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Getter
+@Setter
+@Entity
+@Table(name = "users_gallery")
+public class UserGallery {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "users_id")
+    private Integer userId;
+
+//    @Column(name = "images_id")
+//    private Integer imageId;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "users_id", insertable = false, updatable = false)
+    private User user;
+
+    @OneToMany(mappedBy = "userGallery", cascade = CascadeType.ALL)
+    private List<Image> images;
+}
