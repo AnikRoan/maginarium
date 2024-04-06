@@ -25,8 +25,7 @@ public class UserGallery {
     @Column(name = "users_id")
     private Integer userId;
 
-    @Column(name = "images_id")
-    private Integer imageId;
+
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
