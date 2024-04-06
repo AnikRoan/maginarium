@@ -25,16 +25,16 @@ public class UserGallery {
     @Column(name = "users_id")
     private Integer userId;
 
-//    @Column(name = "images_id")
-//    private Integer imageId;
+    @Column(name = "images_id")
+    private Integer imageId;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "users_id", insertable = false, updatable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "users_id")
     private User user;
 
     @OneToMany(mappedBy = "userGallery", cascade = CascadeType.ALL)
-    private List<Image> images;
+    private List<Picture> pictures;
 }

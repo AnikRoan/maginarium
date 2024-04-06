@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @Table(name = "images_details")
-public class ImageDetails {
+public class PictureDetails {
     @Id
     @Column(name = "images_id")
     private Long id;
@@ -37,5 +37,5 @@ public class ImageDetails {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "images_id", nullable = false)
-    private Image image;
+    private Picture picture;
 }

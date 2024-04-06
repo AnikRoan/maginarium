@@ -25,10 +25,12 @@ public class User {
 
     @Column(name = "role")
     private String role;
-    @Column(name = "is_deleted")
-    private boolean deleted;
+
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private UserDetails userDetails;
+    private UserProfile userProfile;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private UserGallery userGallery;
 
 }
