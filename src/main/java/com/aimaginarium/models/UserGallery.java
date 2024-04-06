@@ -25,8 +25,6 @@ public class UserGallery {
     @Column(name = "users_id")
     private Integer userId;
 
-
-
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
