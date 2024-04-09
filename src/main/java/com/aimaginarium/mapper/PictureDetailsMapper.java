@@ -1,6 +1,6 @@
-package com.aimaginarium.mappers;
+package com.aimaginarium.mapper;
 
-import com.aimaginarium.dtos.PictureDetailsDto;
+import com.aimaginarium.dto.PictureDetailsDto;
 import com.aimaginarium.model.PictureDetails;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;

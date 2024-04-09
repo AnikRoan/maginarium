@@ -1,4 +1,4 @@
-package com.aimaginarium.dtos;
+package com.aimaginarium.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

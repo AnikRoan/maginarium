@@ -1,4 +1,4 @@
-package com.aimaginarium.mappers;
+package com.aimaginarium.mapper;
 
 import java.util.List;
 

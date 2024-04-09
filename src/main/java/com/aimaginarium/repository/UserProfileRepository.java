@@ -1,4 +1,4 @@
-package com.aimaginarium.repositorys;
+package com.aimaginarium.repository;
 
 import com.aimaginarium.models.UserProfile;
 import org.springframework.data.jpa.repository.JpaRepository;

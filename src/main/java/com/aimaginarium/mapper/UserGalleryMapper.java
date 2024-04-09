@@ -1,7 +1,7 @@
-package com.aimaginarium.mappers;
+package com.aimaginarium.mapper;
 
-import com.aimaginarium.dtos.UserGalleryDto;
-import com.aimaginarium.models.UserGallery;
+import com.aimaginarium.dto.UserGalleryDto;
+import com.aimaginarium.model.UserGallery;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

@@ -1,7 +1,7 @@
-package com.aimaginarium.mappers;
+package com.aimaginarium.mapper;
 
-import com.aimaginarium.dtos.UserProfileDto;
-import com.aimaginarium.models.UserProfile;
+import com.aimaginarium.dto.UserProfileDto;
+import com.aimaginarium.model.UserProfile;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
