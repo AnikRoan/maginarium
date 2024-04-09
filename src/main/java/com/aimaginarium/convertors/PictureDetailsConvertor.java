@@ -1,7 +1,7 @@
 package com.aimaginarium.convertors;
 
 import com.aimaginarium.dtos.PictureDetailsDto;
-import com.aimaginarium.models.PictureDetails;
+import com.aimaginarium.model.PictureDetails;
 import org.springframework.stereotype.Component;
 
 @Component

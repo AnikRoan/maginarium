@@ -1,7 +1,7 @@
 package com.aimaginarium.convertors;
 
 import com.aimaginarium.dtos.UserGalleryDto;
-import com.aimaginarium.models.UserGallery;
+import com.aimaginarium.model.UserGallery;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -1,4 +1,4 @@
-package com.aimaginarium.models;
+package com.aimaginarium.model;
 
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,7 +1,7 @@
 package com.aimaginarium.convertors;
 
 import com.aimaginarium.dtos.UserDto;
-import com.aimaginarium.models.User;
+import com.aimaginarium.model.User;
 import org.springframework.stereotype.Component;
 
 @Component
