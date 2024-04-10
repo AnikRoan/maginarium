@@ -27,10 +27,10 @@ public class User {
     private String role;
 
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.PERSIST)
     private UserProfile userProfile;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.PERSIST)
     private UserGallery userGallery;
 
 }

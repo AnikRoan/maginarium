@@ -19,5 +19,6 @@ public class PictureDetailsDto {
     private Integer width;
     private Integer height;
     private String styles;
+    private PictureDto pictureDto;
     private LocalDateTime createdAt;
 }

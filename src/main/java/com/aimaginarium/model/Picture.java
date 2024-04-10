@@ -20,10 +20,13 @@ public class Picture {
     private String s3Link;
 
     @Column(name = "is_private")
-    private boolean isPrivate;
+    private boolean privateField;
 
     @Column(name = "is_deleted")
-    private boolean isDeleted;
+    private boolean deleted;
+
+    @OneToOne(mappedBy = "picture", cascade = CascadeType.PERSIST)
+    private PictureDetails pictureDetails;
 
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "gallery_id")

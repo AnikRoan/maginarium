@@ -1,5 +1,4 @@
 package com.aimaginarium.mapper;
-
 import java.util.List;
 
 public interface Mappable<E, D> {

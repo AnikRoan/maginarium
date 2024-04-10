@@ -15,6 +15,7 @@ public class PictureDto {
     private String s3Link;
     private boolean isPrivate;
     private boolean isDeleted;
+    private PictureDetailsDto pictureDetailsDto;
     private UserGalleryDto userGalleryDto;
 
 
