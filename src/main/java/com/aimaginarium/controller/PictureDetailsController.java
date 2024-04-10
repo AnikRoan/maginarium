@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping("v1/picture/details")
 public class PictureDetailsController {
     private final PictureDetailsService pictureDetailService;
-    private final PictureService pictureService;
+
 
     @GetMapping("/get/{id}")
     public ResponseEntity<PictureDetailsDto> getPictureDetailsById(@PathVariable("id") Long id) {
@@ -32,12 +32,8 @@ public class PictureDetailsController {
 
     @PostMapping("/save/{pictureId}")
     public ResponseEntity<String> savePictureDetails(@RequestBody PictureDetailsDto pictureDetailsDto,@PathVariable("pictureId") Long pictureId) {
-        PictureDto picture = pictureService.getPictureById(pictureId);
-        picture.setPictureDetailsDto(pictureDetailsDto);
-        pictureService.savePicture(picture);
-       // pictureDetailService.savePictureDetails(pictureDetailsDto);
-
-        return ResponseEntity.ok("Picture details saved");
+       pictureDetailService.updateDetails(pictureDetailsDto,pictureId);
+       return ResponseEntity.ok("Picture details saved");
     }
 
     @DeleteMapping("/delete/{id}")
@@ -48,13 +44,7 @@ public class PictureDetailsController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updatePictureDetails(@RequestBody PictureDetailsDto pictureDetailsDto,@PathVariable("id") Long id) {
-        PictureDetailsDto pictureDetails = pictureDetailService.getPictureDetailsById(id);
-        pictureDetails.setTitle(pictureDetailsDto.getTitle());
-        pictureDetails.setPrompt(pictureDetailsDto.getPrompt());
-        pictureDetails.setWidth(pictureDetailsDto.getWidth());
-        pictureDetails.setHeight(pictureDetailsDto.getHeight());
-        pictureDetails.setStyles(pictureDetailsDto.getStyles());
-        pictureDetailService.savePictureDetails(pictureDetails);
+        pictureDetailService.updateDetails(pictureDetailsDto,id);
         return ResponseEntity.ok("Picture details updated");
     }
 

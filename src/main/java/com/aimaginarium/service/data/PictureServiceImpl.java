@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PictureServiceImpl implements PictureService {
 
-    private final PictureMapperImpl pictureMapper;
+    private final PictureMapper pictureMapper;
     private final PictureRepository pictureRepository;
 
     @Override

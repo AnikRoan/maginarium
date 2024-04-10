@@ -4,6 +4,7 @@ import com.aimaginarium.dto.PictureDto;
 import com.aimaginarium.model.Picture;
 import org.mapstruct.Mapper;
 
+
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
@@ -21,13 +22,14 @@ public interface PictureMapper extends Mappable<Picture, PictureDto> {
     @Override
     List<PictureDto> toDtos(List<Picture> entities);
 
-   // @Mapping(source = "id",target = "id")
-   // @Mapping(source = "deleted", target = "deleted")
-   // @Mapping(source = "privateField", target = "privateField")
-   // @Mapping(source = "s3Link", target = "s3Link")
-   // @Mapping(source = "userGallery", target = "userGallery")
-   // @Mapping(source = "pictureDetails", target = "pictureDetails")
+
     @Override
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "s3Link", target = "s3Link")
+    @Mapping(source = "privateField", target = "privateField")
+    @Mapping(source = "deleted", target = "deleted")
+   // @Mapping(source = "pictureDetails", target = "pictureDetailsDto")
+   // @Mapping(source = "userGallery", target = "userGalleryDto")
     Picture toEntity(PictureDto dto);
 
 
