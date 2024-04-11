@@ -13,15 +13,7 @@ import java.util.List;
 public interface PictureDetailsMapper extends Mappable<PictureDetails, PictureDetailsDto> {
 
 
-//    @Override
-//    @Mapping(source = "id", target = "id")
-//    @Mapping(source = "title", target = "title")
-//    @Mapping(source = "prompt", target = "prompt")
-//    @Mapping(source = "width", target = "width")
-//    @Mapping(source = "height", target = "height")
-//    @Mapping(source = "styles", target = "styles")
-//
-//    PictureDetailsDto toDto(PictureDetails entity);
+
 
     @Override
     List<PictureDetailsDto> toDtos(List<PictureDetails> entities);

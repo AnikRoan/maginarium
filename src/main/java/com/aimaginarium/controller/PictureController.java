@@ -44,8 +44,8 @@ public class PictureController {
     public ResponseEntity<String> updatePicture(@RequestBody PictureDto dto,@PathVariable("id") Long id) {
         PictureDto pictureDto = pictureService.getPictureById(id);
         pictureDto.setS3Link(dto.getS3Link());
-        pictureDto.setPrivateField(dto.isPrivateField());
-        pictureDto.setDeleted(dto.isDeleted());
+        pictureDto.setPrivateFlag(dto.isPrivateFlag());
+        pictureDto.setDeletedFlag(dto.isDeletedFlag());
         pictureDto.setUserGalleryDto(dto.getUserGalleryDto());
         pictureService.savePicture(pictureDto);
         return ResponseEntity.ok("Picture updated");

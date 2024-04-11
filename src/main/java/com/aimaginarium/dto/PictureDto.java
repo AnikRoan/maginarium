@@ -2,9 +2,9 @@ package com.aimaginarium.dto;
 
 import lombok.*;
 
-@Data
 @Getter
 @Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -12,8 +12,8 @@ public class PictureDto {
 
     private Long id;
     private String s3Link;
-    private boolean privateField;
-    private boolean deleted;
+    private boolean privateFlag;
+    private boolean deletedFlag;
     private PictureDetailsDto pictureDetailsDto;
     private UserGalleryDto userGalleryDto;
 

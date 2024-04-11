@@ -2,7 +2,7 @@ package com.aimaginarium.service.data;
 
 import com.aimaginarium.dto.PictureDto;
 import com.aimaginarium.mapper.PictureMapper;
-import com.aimaginarium.mapper.PictureMapperImpl;
+
 import com.aimaginarium.model.Picture;
 import com.aimaginarium.repository.PictureRepository;
 import com.aimaginarium.service.PictureService;
