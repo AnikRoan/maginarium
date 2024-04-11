@@ -42,12 +42,8 @@ public class PictureController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updatePicture(@RequestBody PictureDto dto,@PathVariable("id") Long id) {
-        PictureDto pictureDto = pictureService.getPictureById(id);
-        pictureDto.setS3Link(dto.getS3Link());
-        pictureDto.setPrivateFlag(dto.isPrivateFlag());
-        pictureDto.setDeletedFlag(dto.isDeletedFlag());
-        pictureDto.setUserGalleryDto(dto.getUserGalleryDto());
-        pictureService.savePicture(pictureDto);
+        pictureService.updatePicture(dto,id);
+
         return ResponseEntity.ok("Picture updated");
 
     }

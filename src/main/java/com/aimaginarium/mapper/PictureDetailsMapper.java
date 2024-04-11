@@ -25,7 +25,7 @@ public interface PictureDetailsMapper extends Mappable<PictureDetails, PictureDe
     @Mapping(source = "width", target = "width")
     @Mapping(source = "height", target = "height")
     @Mapping(source = "styles", target = "styles")
-    @Mapping(source = "picture", target = "pictureDto")
+
     PictureDetailsDto toDto(PictureDetails entity);
     @Override
     @Mapping(source = "id", target = "id")
@@ -34,7 +34,7 @@ public interface PictureDetailsMapper extends Mappable<PictureDetails, PictureDe
     @Mapping(source = "width", target = "width")
     @Mapping(source = "height", target = "height")
     @Mapping(source = "styles", target = "styles")
-    @Mapping(source = "pictureDto", target = "picture")
+
     PictureDetails toEntity(PictureDetailsDto dto);
 
     @Override

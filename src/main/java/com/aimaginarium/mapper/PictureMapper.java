@@ -28,6 +28,7 @@ public interface PictureMapper extends Mappable<Picture, PictureDto> {
     @Mapping(source = "s3Link", target = "s3Link")
     @Mapping(source = "privateFlag", target = "privateFlag")
     @Mapping(source = "deletedFlag", target = "deletedFlag")
+    //@Mapping(source = "pictureDetailsDto", target = "pictureDetails")
 
     Picture toEntity(PictureDto dto);
 

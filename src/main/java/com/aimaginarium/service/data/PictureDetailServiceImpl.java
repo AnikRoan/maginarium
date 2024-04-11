@@ -21,19 +21,21 @@ public class PictureDetailServiceImpl implements PictureDetailsService {
     @Override
     public void updateDetails(PictureDetailsDto pictureDetailsDto,Long id) {
         Picture picture = pictureRepository.findById(id).orElse(null);
+        if(picture.getPictureDetails()!=null){
+            picture.getPictureDetails().setTitle(pictureDetailsDto.getTitle());
+            picture.getPictureDetails().setPrompt(pictureDetailsDto.getPrompt());
+            picture.getPictureDetails().setStyles(pictureDetailsDto.getStyles());
+            picture.getPictureDetails().setWidth(pictureDetailsDto.getWidth());
+            picture.getPictureDetails().setHeight(pictureDetailsDto.getHeight());
+        }else{
+
         PictureDetails pictureDetails = pictureDetailsMapper.toEntity(pictureDetailsDto);
         pictureDetails.setId(picture.getId());
         pictureDetails.setPicture(picture);
         picture.setPictureDetails(pictureDetails);
-
+        }
 
         pictureRepository.save(picture);
-
-
-
-
-
-
     }
     @Override
     public PictureDetailsDto getPictureDetailsById(Long id) {

@@ -1,15 +1,10 @@
 package com.aimaginarium.controller;
 
 import com.aimaginarium.dto.PictureDetailsDto;
-import com.aimaginarium.dto.PictureDto;
-import com.aimaginarium.model.Picture;
 import com.aimaginarium.service.PictureDetailsService;
-import com.aimaginarium.service.PictureService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -24,11 +19,11 @@ public class PictureDetailsController {
         return ResponseEntity.ok(pictureDetailsDto);
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<PictureDetailsDto>> getAllPictureDetails() {
-        List<PictureDetailsDto> pictureDetailsDtos = pictureDetailService.getAllPictureDetails();
-        return ResponseEntity.ok(pictureDetailsDtos);
-    }
+//    @GetMapping("/all")
+//    public ResponseEntity<List<PictureDetailsDto>> getAllPictureDetails() {
+//        List<PictureDetailsDto> pictureDetailsDtos = pictureDetailService.getAllPictureDetails();
+//        return ResponseEntity.ok(pictureDetailsDtos);
+//    }
 
     @PostMapping("/save/{pictureId}")
     public ResponseEntity<String> savePictureDetails(@RequestBody PictureDetailsDto pictureDetailsDto,@PathVariable("pictureId") Long pictureId) {
@@ -44,6 +39,7 @@ public class PictureDetailsController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updatePictureDetails(@RequestBody PictureDetailsDto pictureDetailsDto,@PathVariable("id") Long id) {
+
         pictureDetailService.updateDetails(pictureDetailsDto,id);
         return ResponseEntity.ok("Picture details updated");
     }
