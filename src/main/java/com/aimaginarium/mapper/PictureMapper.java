@@ -15,26 +15,4 @@ import java.util.List;
 public interface PictureMapper extends Mappable<Picture, PictureDto> {
 
 
-    @Override
-    PictureDto toDto(Picture entity);
-
-
-    @Override
-    List<PictureDto> toDtos(List<Picture> entities);
-
-
-    @Override
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "s3Link", target = "s3Link")
-    @Mapping(source = "privateFlag", target = "privateFlag")
-    @Mapping(source = "deletedFlag", target = "deletedFlag")
-    //@Mapping(source = "pictureDetailsDto", target = "pictureDetails")
-
-    Picture toEntity(PictureDto dto);
-
-
-    @Override
-    List<Picture> toEntities(List<PictureDto> dtos);
-
-
 }

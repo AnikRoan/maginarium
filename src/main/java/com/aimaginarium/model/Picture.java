@@ -25,7 +25,7 @@ public class Picture {
     @Column(name = "is_deleted")
     private boolean deletedFlag;
 
-    @OneToOne(mappedBy = "picture", cascade = CascadeType.PERSIST)
+    @OneToOne(mappedBy = "picture", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private PictureDetails pictureDetails;
 
     @ManyToOne (fetch = FetchType.LAZY)

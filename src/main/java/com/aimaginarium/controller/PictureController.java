@@ -28,23 +28,23 @@ public class PictureController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<String> savePicture(@RequestBody PictureDto pictureDto) {
+    public void savePicture(@RequestBody PictureDto pictureDto) {
        pictureService.savePicture(pictureDto);
-       return ResponseEntity.ok("Picture saved");
+
 
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deletePicture(@PathVariable("id") Long id) {
+    public void deletePicture(@PathVariable("id") Long id) {
         pictureService.deletePicture(id);
-        return ResponseEntity.ok("Picture deleted");
+
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updatePicture(@RequestBody PictureDto dto,@PathVariable("id") Long id) {
+    public void updatePicture(@RequestBody PictureDto dto,@PathVariable("id") Long id) {
         pictureService.updatePicture(dto,id);
 
-        return ResponseEntity.ok("Picture updated");
+
 
     }
 

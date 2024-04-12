@@ -12,31 +12,41 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PictureDetailServiceImpl implements PictureDetailsService {
     private final PictureDetailsMapper pictureDetailsMapper;
     private final PictureDetailsRepository pictureDetailsRepository;
     private final PictureRepository pictureRepository;
-    @Override
-    public void updateDetails(PictureDetailsDto pictureDetailsDto,Long id) {
-        Picture picture = pictureRepository.findById(id).orElse(null);
-        if(picture.getPictureDetails()!=null){
-            picture.getPictureDetails().setTitle(pictureDetailsDto.getTitle());
-            picture.getPictureDetails().setPrompt(pictureDetailsDto.getPrompt());
-            picture.getPictureDetails().setStyles(pictureDetailsDto.getStyles());
-            picture.getPictureDetails().setWidth(pictureDetailsDto.getWidth());
-            picture.getPictureDetails().setHeight(pictureDetailsDto.getHeight());
-        }else{
 
-        PictureDetails pictureDetails = pictureDetailsMapper.toEntity(pictureDetailsDto);
-        pictureDetails.setId(picture.getId());
-        pictureDetails.setPicture(picture);
-        picture.setPictureDetails(pictureDetails);
+    @Override
+    public void updateDetails(PictureDetailsDto pictureDetailsDto, Long id) {
+        Picture picture = pictureRepository.findById(id).orElse(null);
+        if (picture.getPictureDetails() != null) {
+            picture = buildNewDetails(pictureDetailsDto, picture);
+
+        } else {
+            PictureDetails pictureDetails = pictureDetailsMapper.toEntity(pictureDetailsDto);
+            pictureDetails.setId(picture.getId());
+            pictureDetails.setPicture(picture);
+            picture.setPictureDetails(pictureDetails);
         }
 
         pictureRepository.save(picture);
     }
+
+    private Picture buildNewDetails(PictureDetailsDto pictureDetailsDto, Picture picture) {
+        picture.getPictureDetails().setTitle(pictureDetailsDto.getTitle());
+        picture.getPictureDetails().setPrompt(pictureDetailsDto.getPrompt());
+        picture.getPictureDetails().setStyles(pictureDetailsDto.getStyles());
+        picture.getPictureDetails().setWidth(pictureDetailsDto.getWidth());
+        picture.getPictureDetails().setHeight(pictureDetailsDto.getHeight());
+        return picture;
+
+
+    }
+
     @Override
     public PictureDetailsDto getPictureDetailsById(Long id) {
         PictureDetails pictureDetails = pictureDetailsRepository.findById(id).orElse(null);

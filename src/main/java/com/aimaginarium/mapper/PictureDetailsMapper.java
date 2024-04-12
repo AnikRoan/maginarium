@@ -12,31 +12,4 @@ import java.util.List;
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PictureDetailsMapper extends Mappable<PictureDetails, PictureDetailsDto> {
 
-
-
-
-    @Override
-    List<PictureDetailsDto> toDtos(List<PictureDetails> entities);
-
-    @Override
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "title", target = "title")
-    @Mapping(source = "prompt", target = "prompt")
-    @Mapping(source = "width", target = "width")
-    @Mapping(source = "height", target = "height")
-    @Mapping(source = "styles", target = "styles")
-
-    PictureDetailsDto toDto(PictureDetails entity);
-    @Override
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "title", target = "title")
-    @Mapping(source = "prompt", target = "prompt")
-    @Mapping(source = "width", target = "width")
-    @Mapping(source = "height", target = "height")
-    @Mapping(source = "styles", target = "styles")
-
-    PictureDetails toEntity(PictureDetailsDto dto);
-
-    @Override
-    List<PictureDetails> toEntities(List<PictureDetailsDto> dtos);
 }
