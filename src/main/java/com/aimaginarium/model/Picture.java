@@ -1,4 +1,4 @@
-package com.aimaginarium.models;
+package com.aimaginarium.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,10 +20,13 @@ public class Picture {
     private String s3Link;
 
     @Column(name = "is_private")
-    private boolean isPrivate;
+    private boolean privateFlag;
 
     @Column(name = "is_deleted")
-    private boolean isDeleted;
+    private boolean deletedFlag;
+
+    @OneToOne(mappedBy = "picture", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private PictureDetails pictureDetails;
 
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "gallery_id")

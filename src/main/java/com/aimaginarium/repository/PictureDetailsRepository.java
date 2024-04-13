@@ -1,6 +1,6 @@
-package com.aimaginarium.repositorys;
+package com.aimaginarium.repository;
 
-import com.aimaginarium.models.PictureDetails;
+import com.aimaginarium.model.PictureDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PictureDetailsRepository extends JpaRepository<PictureDetails, Long> {

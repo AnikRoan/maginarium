@@ -1,4 +1,4 @@
-package com.aimaginarium.models;
+package com.aimaginarium.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -36,6 +36,6 @@ public class PictureDetails {
     private LocalDateTime createdAt;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "images_id", nullable = false)
+    @JoinColumn(name = "images_id")
     private Picture picture;
 }

@@ -1,4 +1,4 @@
-package com.aimaginarium.models;
+package com.aimaginarium.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -27,10 +27,10 @@ public class User {
     private String role;
 
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private UserProfile userProfile;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private UserGallery userGallery;
 
 }
