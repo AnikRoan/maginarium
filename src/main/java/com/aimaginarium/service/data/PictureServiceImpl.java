@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PictureServiceImpl implements PictureService {
@@ -22,18 +23,19 @@ public class PictureServiceImpl implements PictureService {
     private final PictureRepository pictureRepository;
     private final PictureDetailsRepository pictureDetailsRepository;
     private final PictureDetailsMapper pictureDetailsMapper;
+
     @Override
 
-public void updatePicture(PictureDto pictureDto,Long id){
-    Picture picture = pictureRepository.findById(id).orElse(null);
-    if(picture!=null){
-        picture.setS3Link(pictureDto.getS3Link());
-        picture.setPrivateFlag(pictureDto.isPrivateFlag());
-        picture.setDeletedFlag(pictureDto.isDeletedFlag());
-        pictureRepository.save(picture);
-    }
+    public void updatePicture(PictureDto pictureDto, Long id) {
+        Picture picture = pictureRepository.findById(id).orElse(null);
+        if (picture != null) {
+            picture.setS3Link(pictureDto.getS3Link());
+            picture.setPrivateFlag(pictureDto.isPrivateFlag());
+            picture.setDeletedFlag(pictureDto.isDeletedFlag());
+            pictureRepository.save(picture);
+        }
 
-}
+    }
 
     @Override
     public PictureDto getPictureById(Long id) {
@@ -50,12 +52,9 @@ public void updatePicture(PictureDto pictureDto,Long id){
     @Override
     public List<PictureDto> getAllPictures() {
         List<Picture> pictures = pictureRepository.findAll();
-        List<PictureDto> dto = new ArrayList<>();
-        for(Picture picture: pictures){
-            dto.add(pictureMapper.toDto(picture));
-        }
-        return dto;
+        return pictureMapper.toDtos(pictures);
     }
+
 
     @Override
     public void savePicture(PictureDto pictureDto) {

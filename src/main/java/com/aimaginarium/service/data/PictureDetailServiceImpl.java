@@ -42,6 +42,7 @@ public class PictureDetailServiceImpl implements PictureDetailsService {
         picture.getPictureDetails().setStyles(pictureDetailsDto.getStyles());
         picture.getPictureDetails().setWidth(pictureDetailsDto.getWidth());
         picture.getPictureDetails().setHeight(pictureDetailsDto.getHeight());
+
         return picture;
 
 

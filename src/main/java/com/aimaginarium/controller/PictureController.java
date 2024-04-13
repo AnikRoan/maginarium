@@ -29,7 +29,7 @@ public class PictureController {
 
     @PostMapping("/save")
     public void savePicture(@RequestBody PictureDto pictureDto) {
-       pictureService.savePicture(pictureDto);
+        pictureService.savePicture(pictureDto);
 
 
     }
@@ -41,9 +41,8 @@ public class PictureController {
     }
 
     @PutMapping("/update/{id}")
-    public void updatePicture(@RequestBody PictureDto dto,@PathVariable("id") Long id) {
-        pictureService.updatePicture(dto,id);
-
+    public void updatePicture(@RequestBody PictureDto dto, @PathVariable("id") Long id) {
+        pictureService.updatePicture(dto, id);
 
 
     }

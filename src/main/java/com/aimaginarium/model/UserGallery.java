@@ -22,9 +22,6 @@ public class UserGallery {
     @Column(name = "title")
     private String title;
 
-//    @Column(name = "users_id")
-//    private Integer userId;
-
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

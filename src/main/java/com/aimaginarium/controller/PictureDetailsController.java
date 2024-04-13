@@ -20,10 +20,9 @@ public class PictureDetailsController {
     }
 
 
-
     @PostMapping("/save/{pictureId}")
-    public void savePictureDetails(@RequestBody PictureDetailsDto pictureDetailsDto,@PathVariable("pictureId") Long pictureId) {
-       pictureDetailService.updateDetails(pictureDetailsDto,pictureId);
+    public void savePictureDetails(@RequestBody PictureDetailsDto pictureDetailsDto, @PathVariable("pictureId") Long pictureId) {
+        pictureDetailService.updateDetails(pictureDetailsDto, pictureId);
 
     }
 
@@ -34,8 +33,8 @@ public class PictureDetailsController {
     }
 
     @PutMapping("/update/{id}")
-    public void updatePictureDetails(@RequestBody PictureDetailsDto pictureDetailsDto,@PathVariable("id") Long id) {
-        pictureDetailService.updateDetails(pictureDetailsDto,id);
+    public void updatePictureDetails(@RequestBody PictureDetailsDto pictureDetailsDto, @PathVariable("id") Long id) {
+        pictureDetailService.updateDetails(pictureDetailsDto, id);
 
     }
 
