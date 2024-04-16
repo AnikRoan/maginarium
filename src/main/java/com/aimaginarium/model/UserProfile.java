@@ -15,8 +15,7 @@ import java.time.LocalDateTime;
 @Table(name = "users_details")
 public class UserProfile {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "users_id")
     private Long id;
 
     @Column(name = "full_name")
@@ -32,6 +31,7 @@ public class UserProfile {
     private LocalDateTime createdAt;
 
     @OneToOne
+    @MapsId
     @JoinColumn(name = "users_id", referencedColumnName = "id")
     private User user;
 }
