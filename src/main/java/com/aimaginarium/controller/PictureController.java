@@ -16,7 +16,7 @@ public class PictureController {
 
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<PictureDto> getPictureById(@PathVariable("id") Long id) {
+    public ResponseEntity<PictureDto> getPictureById(@PathVariable("id") final Long id) {
         PictureDto pictureDto = pictureService.getPictureById(id);
         return ResponseEntity.ok(pictureDto);
     }
@@ -28,20 +28,20 @@ public class PictureController {
     }
 
     @PostMapping("/save")
-    public void savePicture(@RequestBody PictureDto pictureDto) {
+    public void savePicture(@RequestBody final PictureDto pictureDto) {
         pictureService.savePicture(pictureDto);
 
 
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deletePicture(@PathVariable("id") Long id) {
+    public void deletePicture(@PathVariable("id") final Long id) {
         pictureService.deletePicture(id);
 
     }
 
     @PutMapping("/update/{id}")
-    public void updatePicture(@RequestBody PictureDto dto, @PathVariable("id") Long id) {
+    public void updatePicture(@RequestBody final PictureDto dto, @PathVariable("id") final Long id) {
         pictureService.updatePicture(dto, id);
 
 

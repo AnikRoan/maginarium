@@ -16,6 +16,6 @@ public class UserProfileDto {
     private Long id;
     private String fullName;
     private String login;
+    private String phoneNumber;
     private LocalDateTime createdAt;
-    private UserDto userDto;
 }
