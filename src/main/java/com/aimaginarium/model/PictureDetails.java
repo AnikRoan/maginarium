@@ -36,6 +36,8 @@ public class PictureDetails {
     private LocalDateTime createdAt;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
     @JoinColumn(name = "images_id")
     private Picture picture;
+
 }

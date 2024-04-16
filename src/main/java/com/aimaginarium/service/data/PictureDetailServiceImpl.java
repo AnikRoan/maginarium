@@ -11,20 +11,20 @@ import com.aimaginarium.service.PictureDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class PictureDetailServiceImpl implements PictureDetailsService {
     private final PictureDetailsMapper pictureDetailsMapper;
-    private final PictureDetailsRepository pictureDetailsRepository;
     private final PictureRepository pictureRepository;
 
     @Override
     public void updateDetails(PictureDetailsDto pictureDetailsDto, Long id) {
-        Picture picture = pictureRepository.findById(id).orElse(null);
+        Picture picture = pictureRepository.findById(id).orElseThrow(() -> new RuntimeException("Picture not found"));
         if (picture.getPictureDetails() != null) {
-            picture = buildNewDetails(pictureDetailsDto, picture);
+            buildNewDetails(pictureDetailsDto, picture);
 
         } else {
             PictureDetails pictureDetails = pictureDetailsMapper.toEntity(pictureDetailsDto);
@@ -37,41 +37,31 @@ public class PictureDetailServiceImpl implements PictureDetailsService {
     }
 
     private Picture buildNewDetails(PictureDetailsDto pictureDetailsDto, Picture picture) {
-        picture.getPictureDetails().setTitle(pictureDetailsDto.getTitle());
-        picture.getPictureDetails().setPrompt(pictureDetailsDto.getPrompt());
-        picture.getPictureDetails().setStyles(pictureDetailsDto.getStyles());
-        picture.getPictureDetails().setWidth(pictureDetailsDto.getWidth());
-        picture.getPictureDetails().setHeight(pictureDetailsDto.getHeight());
+        if (pictureDetailsDto.getTitle() != null) {
+            picture.getPictureDetails().setTitle(pictureDetailsDto.getTitle());
+        }
+        if (pictureDetailsDto.getPrompt() != null) {
+            picture.getPictureDetails().setPrompt(pictureDetailsDto.getPrompt());
+        }
+        if (pictureDetailsDto.getStyles() != null) {
+            picture.getPictureDetails().setStyles(pictureDetailsDto.getStyles());
+        }
+        if (pictureDetailsDto.getWidth() != null) {
+            picture.getPictureDetails().setWidth(pictureDetailsDto.getWidth());
+            picture.getPictureDetails().setHeight(pictureDetailsDto.setPictureHeight());
+        }
 
         return picture;
 
 
     }
 
-    @Override
-    public PictureDetailsDto getPictureDetailsById(Long id) {
-        PictureDetails pictureDetails = pictureDetailsRepository.findById(id).orElse(null);
-        return pictureDetailsMapper.toDto(pictureDetails);
-    }
-
-    @Override
-    public List<PictureDetailsDto> getAllPictureDetails() {
-        List<PictureDetails> pictureDetails = pictureDetailsRepository.findAll();
-        return pictureDetailsMapper.toDtos(pictureDetails);
-    }
 
 
-    @Override
-    public void savePictureDetails(PictureDetailsDto pictureDetailsDto) {
-        PictureDetails pictureDetails = pictureDetailsMapper.toEntity(pictureDetailsDto);
-        pictureDetailsRepository.save(pictureDetails);
 
 
-    }
 
-    @Override
-    public void deletePictureDetails(Long id) {
-        pictureDetailsRepository.deleteById(id);
 
-    }
+
+
 }

@@ -1,26 +1,14 @@
 package com.aimaginarium.dto;
 
-
 import lombok.*;
 
 @Data
 @Builder
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @NoArgsConstructor
-public class PictureDto {
+public class DetailsAndPictureDto {
 
-    private Long id;
-    private String s3Link;
-    private boolean privateFlag;
-    private boolean deletedFlag;
+    private PictureDto pictureDto;
     private PictureDetailsDto pictureDetailsDto;
 
-
-
 }
-
-
-
-
-
-

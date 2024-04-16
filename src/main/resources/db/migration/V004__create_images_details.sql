@@ -2,7 +2,7 @@ CREATE TABLE images_details
 (
     images_id  integer,
     title      varchar,
-    promt      text,
+    prompt      text,
     width      integer,
     height     integer,
     styles     varchar,

@@ -17,5 +17,5 @@ public class UserProfileDto {
     private String fullName;
     private String login;
     private LocalDateTime createdAt;
-    private UserDto userDto;
+
 }
