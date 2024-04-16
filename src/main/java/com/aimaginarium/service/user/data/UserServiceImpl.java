@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Collections;
 
+import static java.lang.String.format;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -31,6 +33,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto saveUser(UserDto userDto) {
         User user = userMapper.toEntity(userDto);
+        // will use gallery service
         setUserGallery(user);
         setUserProfile(user);
         User savedUser = userRepository.save(user);
@@ -58,14 +61,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto findUserById(Long id) {
         return userMapper.toDto(userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(ErrorMessage.USER_NOT_FOUND)));
+                .orElseThrow(() -> new UserNotFoundException(format(ErrorMessage.USER_NOT_FOUND, id))));
     }
 
     @Override
     public UserProfileDto findUserProfileByUserId(Long userId) {
         return userProfileMapper.toDto(userProfileRepository
                 .findUserProfileByUserId(userId)
-                .orElseThrow(() -> new UserNotFoundException(ErrorMessage.USER_DETAILS_NOT_FOUND)));
+                .orElseThrow(() -> new UserNotFoundException(format(ErrorMessage.USER_DETAILS_NOT_FOUND, userId))));
+    }
+
+    @Override
+    public UserProfileDto findUserProfileById(Long id) {
+        return userProfileMapper.toDto(userProfileRepository
+                .findById(id)
+                .orElseThrow(() -> new UserNotFoundException(format(ErrorMessage.USER_DETAILS_BY_ID_NOT_FOUND, id))));
     }
 
     @Override
@@ -76,7 +86,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void changeUserEmail(Long userId, String email) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(ErrorMessage.USER_NOT_FOUND));
+                .orElseThrow(() -> new UserNotFoundException(format(ErrorMessage.USER_DETAILS_NOT_FOUND, userId)));
         user.setEmail(email);
         userRepository.save(user);
     }
@@ -84,7 +94,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void changeUserPhoneNumber(Long userId, String phoneNumber) {
         UserProfile userProfile = userProfileRepository.findUserProfileByUserId(userId)
-                .orElseThrow(() -> new UserNotFoundException(ErrorMessage.USER_NOT_FOUND));
+                .orElseThrow(() -> new UserNotFoundException(format(ErrorMessage.USER_DETAILS_NOT_FOUND, userId)));
         userProfile.setPhoneNumber(phoneNumber);
         userProfileRepository.save(userProfile);
     }
@@ -92,7 +102,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void changeUsername(Long userId, String username) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(ErrorMessage.USER_NOT_FOUND));
+                .orElseThrow(() -> new UserNotFoundException(format(ErrorMessage.USER_DETAILS_NOT_FOUND, userId)));
         UserProfile userProfile = user.getUserProfile();
         userProfile.setFullName(username);
         userRepository.save(user);
@@ -101,7 +111,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void lockUser(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(ErrorMessage.USER_NOT_FOUND));
+                .orElseThrow(() -> new UserNotFoundException(format(ErrorMessage.USER_DETAILS_NOT_FOUND, userId)));
         user.setIsLock(true);
         userRepository.save(user);
     }
@@ -109,7 +119,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void unlockUserById(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(ErrorMessage.USER_NOT_FOUND));
+                .orElseThrow(() -> new UserNotFoundException(format(ErrorMessage.USER_DETAILS_NOT_FOUND, userId)));
         user.setIsLock(false);
         userRepository.save(user);
     }

@@ -11,6 +11,8 @@ public interface UserService {
 
     UserProfileDto findUserProfileByUserId(Long userId);
 
+    UserProfileDto findUserProfileById(Long id);
+
     void deleteUserById(Long id);
 
     void changeUserEmail(Long userId, String email);

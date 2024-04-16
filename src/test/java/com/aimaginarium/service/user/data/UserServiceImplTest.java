@@ -2,6 +2,7 @@ package com.aimaginarium.service.user.data;
 
 import com.aimaginarium.dto.UserDto;
 import com.aimaginarium.dto.UserProfileDto;
+import com.aimaginarium.exception.ErrorMessage;
 import com.aimaginarium.exception.UserNotFoundException;
 import com.aimaginarium.mapper.UserMapper;
 import com.aimaginarium.mapper.UserProfileMapper;
@@ -9,8 +10,6 @@ import com.aimaginarium.model.User;
 import com.aimaginarium.repository.UserGalleryRepository;
 import com.aimaginarium.repository.UserProfileRepository;
 import com.aimaginarium.repository.UserRepository;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
+import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
@@ -48,7 +48,7 @@ class UserServiceImplTest {
     private UserDto savedUserDto;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         UserDto userDto = getUserDto();
         savedUserDto = userService.saveUser(userDto);
     }
@@ -72,6 +72,14 @@ class UserServiceImplTest {
     @Test
     void findUserProfileByUserId() {
         UserProfileDto profile = userService.findUserProfileByUserId(savedUserDto.getId());
+        assertEquals("1234567890", profile.getPhoneNumber());
+    }
+
+    @Test
+    public void findUserProfileById() {
+        UserDto user = userService.findUserById(savedUserDto.getId());
+        UserProfileDto userProfile = user.getUserProfile();
+        UserProfileDto profile = userService.findUserProfileById(userProfile.getId());
         assertEquals("1234567890", profile.getPhoneNumber());
     }
 
