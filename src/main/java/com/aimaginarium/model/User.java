@@ -26,6 +26,9 @@ public class User {
     @Column(name = "role")
     private String role;
 
+    @Column(name = "is_lock")
+    private Boolean isLock;
+
 
     @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private UserProfile userProfile;

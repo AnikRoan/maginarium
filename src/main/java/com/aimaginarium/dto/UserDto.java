@@ -16,5 +16,5 @@ public class UserDto {
     private String password;
     private String role;
     private UserProfileDto userProfile;
-    private UserGalleryDto userGallery;
+    private Boolean isLock;
 }
