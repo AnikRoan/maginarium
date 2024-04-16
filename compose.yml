@@ -27,7 +27,7 @@ services:
       timeout: 10s
       retries: 5
     environment:
-      - SERVER_PORT=8181
+      - SERVER_PORT=8888
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db/gallery-db
     stdin_open: true
     networks:

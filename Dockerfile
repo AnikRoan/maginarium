@@ -4,7 +4,7 @@ WORKDIR /aimaginarium_be
 # Copying files to the directory at the app-image
 COPY . /aimaginarium_be/.
 # Running Maven to biuld the project
-RUN mvn -f /aimaginarium_be/pom.xml clean install -Dmaven.test.skip=true
+RUN mvn -f /aimaginarium_be/pom.xml clean install -Dmaven.test.skip=false
 
 FROM eclipse-temurin:21-jre
 WORKDIR /aimaginarium_be
