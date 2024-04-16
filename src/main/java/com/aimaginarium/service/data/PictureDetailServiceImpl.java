@@ -2,7 +2,6 @@ package com.aimaginarium.service.data;
 
 import com.aimaginarium.dto.PictureDetailsDto;
 import com.aimaginarium.mapper.PictureDetailsMapper;
-
 import com.aimaginarium.model.Picture;
 import com.aimaginarium.model.PictureDetails;
 import com.aimaginarium.repository.PictureDetailsRepository;
@@ -21,7 +20,7 @@ public class PictureDetailServiceImpl implements PictureDetailsService {
     private final PictureRepository pictureRepository;
 
     @Override
-    public void updateDetails(PictureDetailsDto pictureDetailsDto, Long id) {
+    public void updateDetails(final PictureDetailsDto pictureDetailsDto, final Long id) {
         Picture picture = pictureRepository.findById(id).orElse(null);
         if (picture.getPictureDetails() != null) {
             picture = buildNewDetails(pictureDetailsDto, picture);
@@ -36,7 +35,7 @@ public class PictureDetailServiceImpl implements PictureDetailsService {
         pictureRepository.save(picture);
     }
 
-    private Picture buildNewDetails(PictureDetailsDto pictureDetailsDto, Picture picture) {
+    private Picture buildNewDetails(final PictureDetailsDto pictureDetailsDto, final Picture picture) {
         picture.getPictureDetails().setTitle(pictureDetailsDto.getTitle());
         picture.getPictureDetails().setPrompt(pictureDetailsDto.getPrompt());
         picture.getPictureDetails().setStyles(pictureDetailsDto.getStyles());
@@ -49,7 +48,7 @@ public class PictureDetailServiceImpl implements PictureDetailsService {
     }
 
     @Override
-    public PictureDetailsDto getPictureDetailsById(Long id) {
+    public PictureDetailsDto getPictureDetailsById(final Long id) {
         PictureDetails pictureDetails = pictureDetailsRepository.findById(id).orElse(null);
         return pictureDetailsMapper.toDto(pictureDetails);
     }
@@ -62,7 +61,7 @@ public class PictureDetailServiceImpl implements PictureDetailsService {
 
 
     @Override
-    public void savePictureDetails(PictureDetailsDto pictureDetailsDto) {
+    public void savePictureDetails(final PictureDetailsDto pictureDetailsDto) {
         PictureDetails pictureDetails = pictureDetailsMapper.toEntity(pictureDetailsDto);
         pictureDetailsRepository.save(pictureDetails);
 
@@ -70,7 +69,7 @@ public class PictureDetailServiceImpl implements PictureDetailsService {
     }
 
     @Override
-    public void deletePictureDetails(Long id) {
+    public void deletePictureDetails(final Long id) {
         pictureDetailsRepository.deleteById(id);
 
     }

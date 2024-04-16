@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
     private final UserProfileMapper userProfileMapper;
 
     @Override
-    public UserDto saveUser(UserDto userDto) {
+    public UserDto saveUser(final UserDto userDto) {
         User user = userMapper.toEntity(userDto);
         // will use gallery service
         setUserGallery(user);
@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.toDto(savedUser);
     }
 
-    private void setUserGallery(User user) {
+    private void setUserGallery(final User user) {
         UserGallery userGallery = UserGallery.builder()
                 .user(user)
                 .title(user.getEmail())
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
         userGalleryRepository.save(userGallery);
     }
 
-    private void setUserProfile(User user) {
+    private void setUserProfile(final User user) {
         UserProfile userProfile = user.getUserProfile();
         userProfile.setCreatedAt(LocalDateTime.now());
         userProfile.setUser(user);
@@ -59,32 +59,32 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto findUserById(Long id) {
+    public UserDto findUserById(final Long id) {
         return userMapper.toDto(userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(format(ErrorMessage.USER_NOT_FOUND, id))));
     }
 
     @Override
-    public UserProfileDto findUserProfileByUserId(Long userId) {
+    public UserProfileDto findUserProfileByUserId(final Long userId) {
         return userProfileMapper.toDto(userProfileRepository
                 .findUserProfileByUserId(userId)
                 .orElseThrow(() -> new UserNotFoundException(format(ErrorMessage.USER_DETAILS_NOT_FOUND, userId))));
     }
 
     @Override
-    public UserProfileDto findUserProfileById(Long id) {
+    public UserProfileDto findUserProfileById(final Long id) {
         return userProfileMapper.toDto(userProfileRepository
                 .findById(id)
                 .orElseThrow(() -> new UserNotFoundException(format(ErrorMessage.USER_DETAILS_BY_ID_NOT_FOUND, id))));
     }
 
     @Override
-    public void deleteUserById(Long id) {
+    public void deleteUserById(final Long id) {
         userRepository.deleteById(id);
     }
 
     @Override
-    public void changeUserEmail(Long userId, String email) {
+    public void changeUserEmail(final Long userId, final String email) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(format(ErrorMessage.USER_DETAILS_NOT_FOUND, userId)));
         user.setEmail(email);
@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void changeUserPhoneNumber(Long userId, String phoneNumber) {
+    public void changeUserPhoneNumber(final Long userId, final String phoneNumber) {
         UserProfile userProfile = userProfileRepository.findUserProfileByUserId(userId)
                 .orElseThrow(() -> new UserNotFoundException(format(ErrorMessage.USER_DETAILS_NOT_FOUND, userId)));
         userProfile.setPhoneNumber(phoneNumber);
@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void changeUsername(Long userId, String username) {
+    public void changeUsername(final Long userId, final String username) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(format(ErrorMessage.USER_DETAILS_NOT_FOUND, userId)));
         UserProfile userProfile = user.getUserProfile();
@@ -109,7 +109,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void lockUser(Long userId) {
+    public void lockUser(final Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(format(ErrorMessage.USER_DETAILS_NOT_FOUND, userId)));
         user.setIsLock(true);
@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void unlockUserById(Long userId) {
+    public void unlockUserById(final Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(format(ErrorMessage.USER_DETAILS_NOT_FOUND, userId)));
         user.setIsLock(false);
