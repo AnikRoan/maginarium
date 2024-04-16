@@ -1,6 +1,5 @@
 CREATE TABLE users_details
 (
-    id           serial PRIMARY KEY NOT NULL,
     users_id     integer,
     full_name    varchar,
     login        varchar,
