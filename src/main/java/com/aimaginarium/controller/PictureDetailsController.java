@@ -14,26 +14,28 @@ public class PictureDetailsController {
 
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<PictureDetailsDto> getPictureDetailsById(@PathVariable("id") Long id) {
+    public ResponseEntity<PictureDetailsDto> getPictureDetailsById(@PathVariable("id") final Long id) {
         PictureDetailsDto pictureDetailsDto = pictureDetailService.getPictureDetailsById(id);
         return ResponseEntity.ok(pictureDetailsDto);
     }
 
 
     @PostMapping("/save/{pictureId}")
-    public void savePictureDetails(@RequestBody PictureDetailsDto pictureDetailsDto, @PathVariable("pictureId") Long pictureId) {
+    public void savePictureDetails(@RequestBody final PictureDetailsDto pictureDetailsDto,
+                                   @PathVariable("pictureId") final Long pictureId) {
         pictureDetailService.updateDetails(pictureDetailsDto, pictureId);
 
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deletePictureDetails(@PathVariable("id") Long id) {
+    public void deletePictureDetails(@PathVariable("id") final Long id) {
         pictureDetailService.deletePictureDetails(id);
 
     }
 
     @PutMapping("/update/{id}")
-    public void updatePictureDetails(@RequestBody PictureDetailsDto pictureDetailsDto, @PathVariable("id") Long id) {
+    public void updatePictureDetails(@RequestBody final PictureDetailsDto pictureDetailsDto,
+                                     @PathVariable("id") final Long id) {
         pictureDetailService.updateDetails(pictureDetailsDto, id);
 
     }

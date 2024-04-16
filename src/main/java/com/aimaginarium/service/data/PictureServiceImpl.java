@@ -1,10 +1,8 @@
 package com.aimaginarium.service.data;
 
-import com.aimaginarium.dto.PictureDetailsDto;
 import com.aimaginarium.dto.PictureDto;
 import com.aimaginarium.mapper.PictureDetailsMapper;
 import com.aimaginarium.mapper.PictureMapper;
-
 import com.aimaginarium.model.Picture;
 import com.aimaginarium.model.PictureDetails;
 import com.aimaginarium.repository.PictureDetailsRepository;
@@ -13,7 +11,6 @@ import com.aimaginarium.service.PictureService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,7 +23,7 @@ public class PictureServiceImpl implements PictureService {
 
     @Override
 
-    public void updatePicture(PictureDto pictureDto, Long id) {
+    public void updatePicture(final PictureDto pictureDto, final Long id) {
         Picture picture = pictureRepository.findById(id).orElse(null);
         if (picture != null) {
             picture.setS3Link(pictureDto.getS3Link());
@@ -38,14 +35,11 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
-    public PictureDto getPictureById(Long id) {
+    public PictureDto getPictureById(final Long id) {
         Picture picture = pictureRepository.findById(id).orElse(null);
         PictureDetails pictureDetails = pictureDetailsRepository.findById(picture.getId()).orElse(null);
-
         PictureDto pictureDto = pictureMapper.toDto(picture);
         pictureDto.setPictureDetailsDto(pictureDetailsMapper.toDto(pictureDetails));
-
-
         return pictureDto;
     }
 
@@ -57,7 +51,7 @@ public class PictureServiceImpl implements PictureService {
 
 
     @Override
-    public void savePicture(PictureDto pictureDto) {
+    public void savePicture(final PictureDto pictureDto) {
         Picture picture = pictureMapper.toEntity(pictureDto);
         pictureRepository.save(picture);
 
@@ -65,7 +59,7 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
-    public void deletePicture(Long id) {
+    public void deletePicture(final Long id) {
         pictureRepository.deleteById(id);
 
     }

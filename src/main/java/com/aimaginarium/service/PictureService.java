@@ -5,7 +5,8 @@ import com.aimaginarium.dto.PictureDto;
 import java.util.List;
 
 public interface PictureService {
-    void updatePicture(PictureDto pictureDto,Long id);
+    void updatePicture(PictureDto pictureDto, Long id);
+
     PictureDto getPictureById(Long id);
 
     List<PictureDto> getAllPictures();
