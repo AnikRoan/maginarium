@@ -3,7 +3,6 @@ package com.aimaginarium.service.user.data;
 import com.aimaginarium.dto.ChangePasswordDto;
 import com.aimaginarium.dto.UserDto;
 import com.aimaginarium.dto.UserProfileDto;
-import com.aimaginarium.exception.ErrorMessage;
 import com.aimaginarium.exception.InvalidPasswordException;
 import com.aimaginarium.exception.UserNotFoundException;
 import com.aimaginarium.mapper.UserMapper;
@@ -22,7 +21,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Collections;
 
-import static java.lang.String.format;
+import static com.aimaginarium.exception.ErrorMessage.*;
 
 @Service
 @RequiredArgsConstructor
@@ -65,14 +64,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto findUserById(final Long id) {
         return userMapper.toDto(userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(format(ErrorMessage.USER_NOT_FOUND, id))));
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND, id)));
     }
 
     @Override
     public UserProfileDto findUserProfileByUserId(final Long userId) {
         return userProfileMapper.toDto(userProfileRepository
                 .findUserProfileByUserId(userId)
-                .orElseThrow(() -> new UserNotFoundException(format(ErrorMessage.USER_DETAILS_NOT_FOUND, userId))));
+                .orElseThrow(() -> new UserNotFoundException(USER_DETAILS_NOT_FOUND, userId)));
     }
 
     @Override
@@ -83,9 +82,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void changePassword(Long userId, ChangePasswordDto passwordDto) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(format(ErrorMessage.USER_DETAILS_NOT_FOUND, userId)));
+                .orElseThrow(() -> new UserNotFoundException(USER_DETAILS_NOT_FOUND, userId));
         if (!passwordEncoder.matches(passwordDto.oldPassword(), user.getPassword())) {
-            throw new InvalidPasswordException(ErrorMessage.INVALID_PASSWORD);
+            throw new InvalidPasswordException(INVALID_PASSWORD);
         }
         String hashedPassword = passwordEncoder.encode(passwordDto.newPassword());
         user.setPassword(hashedPassword);
@@ -95,7 +94,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void changeUserEmail(final Long userId, final String email) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(format(ErrorMessage.USER_DETAILS_NOT_FOUND, userId)));
+                .orElseThrow(() -> new UserNotFoundException(USER_DETAILS_NOT_FOUND, userId));
         user.setEmail(email);
         userRepository.save(user);
     }
@@ -103,7 +102,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void changeUserPhoneNumber(final Long userId, final String phoneNumber) {
         UserProfile userProfile = userProfileRepository.findUserProfileByUserId(userId)
-                .orElseThrow(() -> new UserNotFoundException(format(ErrorMessage.USER_DETAILS_NOT_FOUND, userId)));
+                .orElseThrow(() -> new UserNotFoundException(USER_DETAILS_NOT_FOUND, userId));
         userProfile.setPhoneNumber(phoneNumber);
         userProfileRepository.save(userProfile);
     }
@@ -111,7 +110,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void changeUsername(final Long userId, final String username) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(format(ErrorMessage.USER_DETAILS_NOT_FOUND, userId)));
+                .orElseThrow(() -> new UserNotFoundException(USER_DETAILS_NOT_FOUND, userId));
         UserProfile userProfile = user.getUserProfile();
         userProfile.setFullName(username);
         userRepository.save(user);
@@ -120,7 +119,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void lockUser(final Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(format(ErrorMessage.USER_DETAILS_NOT_FOUND, userId)));
+                .orElseThrow(() -> new UserNotFoundException(USER_DETAILS_NOT_FOUND, userId));
         user.setIsLock(true);
         userRepository.save(user);
     }
@@ -128,7 +127,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void unlockUserById(final Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(format(ErrorMessage.USER_DETAILS_NOT_FOUND, userId)));
+                .orElseThrow(() -> new UserNotFoundException(USER_DETAILS_NOT_FOUND, userId));
         user.setIsLock(false);
         userRepository.save(user);
     }
