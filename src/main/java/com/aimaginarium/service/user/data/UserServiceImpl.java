@@ -1,8 +1,10 @@
 package com.aimaginarium.service.user.data;
 
+import com.aimaginarium.dto.ChangePasswordDto;
 import com.aimaginarium.dto.UserDto;
 import com.aimaginarium.dto.UserProfileDto;
 import com.aimaginarium.exception.ErrorMessage;
+import com.aimaginarium.exception.InvalidPasswordException;
 import com.aimaginarium.exception.UserNotFoundException;
 import com.aimaginarium.mapper.UserMapper;
 import com.aimaginarium.mapper.UserProfileMapper;
@@ -14,6 +16,7 @@ import com.aimaginarium.repository.UserProfileRepository;
 import com.aimaginarium.repository.UserRepository;
 import com.aimaginarium.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -29,6 +32,7 @@ public class UserServiceImpl implements UserService {
     private final UserProfileRepository userProfileRepository;
     private final UserMapper userMapper;
     private final UserProfileMapper userProfileMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDto saveUser(final UserDto userDto) {
@@ -72,15 +76,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserProfileDto findUserProfileById(final Long id) {
-        return userProfileMapper.toDto(userProfileRepository
-                .findById(id)
-                .orElseThrow(() -> new UserNotFoundException(format(ErrorMessage.USER_DETAILS_BY_ID_NOT_FOUND, id))));
+    public void deleteUserById(final Long id) {
+        userRepository.deleteById(id);
     }
 
     @Override
-    public void deleteUserById(final Long id) {
-        userRepository.deleteById(id);
+    public void changePassword(Long userId, ChangePasswordDto passwordDto) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(format(ErrorMessage.USER_DETAILS_NOT_FOUND, userId)));
+        if (!passwordEncoder.matches(passwordDto.oldPassword(), user.getPassword())) {
+            throw new InvalidPasswordException(ErrorMessage.INVALID_PASSWORD);
+        }
+        String hashedPassword = passwordEncoder.encode(passwordDto.newPassword());
+        user.setPassword(hashedPassword);
+        userRepository.save(user);
     }
 
     @Override

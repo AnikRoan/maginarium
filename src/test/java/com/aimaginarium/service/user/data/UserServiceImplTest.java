@@ -1,5 +1,6 @@
 package com.aimaginarium.service.user.data;
 
+import com.aimaginarium.dto.ChangePasswordDto;
 import com.aimaginarium.dto.UserDto;
 import com.aimaginarium.dto.UserProfileDto;
 import com.aimaginarium.exception.ErrorMessage;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +43,9 @@ class UserServiceImplTest {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private UserProfileMapper userProfileMapper;
@@ -76,14 +81,6 @@ class UserServiceImplTest {
     }
 
     @Test
-    public void findUserProfileById() {
-        UserDto user = userService.findUserById(savedUserDto.getId());
-        UserProfileDto userProfile = user.getUserProfile();
-        UserProfileDto profile = userService.findUserProfileById(userProfile.getId());
-        assertEquals("1234567890", profile.getPhoneNumber());
-    }
-
-    @Test
     void deleteUserById() {
         userService.deleteUserById(savedUserDto.getId());
         assertThrows(UserNotFoundException.class, () -> userService.findUserById(savedUserDto.getId()));
@@ -111,6 +108,14 @@ class UserServiceImplTest {
     }
 
     @Test
+    void changePassword() {
+        ChangePasswordDto passwordDto = new ChangePasswordDto("12345", "qwert");
+        userService.changePassword(savedUserDto.getId(), passwordDto);
+        UserDto user = userService.findUserById(savedUserDto.getId());
+        assertTrue(passwordEncoder.matches("qwert", user.getPassword()));
+    }
+
+    @Test
     void lockUser() {
         userService.lockUser(savedUserDto.getId());
         UserDto user = userService.findUserById(savedUserDto.getId());
@@ -132,7 +137,7 @@ class UserServiceImplTest {
         UserDto userDto = new UserDto();
         userDto.setRole("U");
         userDto.setEmail("test");
-        userDto.setPassword("12345");
+        userDto.setPassword(passwordEncoder.encode("12345"));
         userDto.setIsLock(false);
         userDto.setUserProfile(UserProfileDto.builder()
                 .createdAt(LocalDateTime.now())
