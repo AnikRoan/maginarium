@@ -1,5 +1,6 @@
 package com.aimaginarium.service.user;
 
+import com.aimaginarium.dto.ChangePasswordDto;
 import com.aimaginarium.dto.UserDto;
 import com.aimaginarium.dto.UserProfileDto;
 
@@ -11,8 +12,6 @@ public interface UserService {
 
     UserProfileDto findUserProfileByUserId(Long userId);
 
-    UserProfileDto findUserProfileById(Long id);
-
     void deleteUserById(Long id);
 
     void changeUserEmail(Long userId, String email);
@@ -20,6 +19,8 @@ public interface UserService {
     void changeUserPhoneNumber(Long userId, String phoneNumber);
 
     void changeUsername(Long userId, String username);
+
+    void changePassword(Long userId, ChangePasswordDto passportDto);
 
     void lockUser(Long userId);
 
