@@ -1,7 +1,9 @@
 package com.aimaginarium.exception.handler;
 
 import com.aimaginarium.exception.ErrorDetails;
-import jakarta.persistence.EntityNotFoundException;
+import com.aimaginarium.exception.GalleryExistsException;
+import com.aimaginarium.exception.GalleryNotFoundException;
+import com.aimaginarium.exception.UserNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,20 +21,23 @@ import static com.aimaginarium.exception.ErrorDetails.getResponseEntityErrorsMap
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorDetails> handleValidationErrors(HttpServletRequest request,
-                                                               MethodArgumentNotValidException ex) {
+    public ResponseEntity<ErrorDetails> handleValidationErrors(final HttpServletRequest request,
+                                                               final MethodArgumentNotValidException ex) {
         Map<String, String> errorsMap = ex.getBindingResult().getFieldErrors().stream()
-                .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
+                .collect(Collectors.toMap(
+                        FieldError::getField,
+                        field -> field.getDefaultMessage() != null ? field.getDefaultMessage() : ""));
         return getResponseEntityErrorsMap(request.getRequestURI(), HttpStatus.BAD_REQUEST, errorsMap);
     }
 
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ErrorDetails> handleEntityNotFoundException(HttpServletRequest request,
-                                                                      EntityNotFoundException ex) {
+    @ExceptionHandler({UserNotFoundException.class, GalleryNotFoundException.class,
+            GalleryExistsException.class})
+    public ResponseEntity<ErrorDetails> handleNotFoundException(final HttpServletRequest request,
+                                                                final Exception ex) {
         return getResponseEntityErrorsMap(request.getRequestURI(), HttpStatus.BAD_REQUEST, makeMapFromException(ex));
     }
 
-    private Map<String, String> makeMapFromException(Exception exceptions) {
+    private Map<String, String> makeMapFromException(final Exception exceptions) {
         return Map.of(exceptions.getClass().getSimpleName(), exceptions.getLocalizedMessage());
     }
 }
