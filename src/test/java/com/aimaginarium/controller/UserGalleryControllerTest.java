@@ -1,18 +1,17 @@
-package com.aimaginarium.aimaginariumapp.controller;
+package com.aimaginarium.controller;
 
-import com.aimaginarium.controller.UserGalleryController;
 import com.aimaginarium.dto.UserGalleryDto;
-import com.aimaginarium.service.UserGalleryService;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.aimaginarium.service.gallery.UserGalleryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static com.aimaginarium.utils.EndpointUris.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -20,17 +19,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserGalleryController.class)
+@AutoConfigureMockMvc(addFilters = false)
 @DisplayName("UserGallery Controller Tests")
 class UserGalleryControllerTest {
 
-    private final String BASE_URL = "/v1/gallery";
 
     @MockBean
     private UserGalleryService galleryService;
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private ObjectMapper objectMapper;
 
     private UserGalleryDto galleryDto;
 
@@ -43,11 +40,11 @@ class UserGalleryControllerTest {
     }
 
     @Test
-    @DisplayName("GET /v1/gallery/{id}")
+    @DisplayName("GET " + ROOT_GALLERY + GET_GALLERY)
     void getUserGalleryTest() throws Exception {
         when(galleryService.getGalleryById(anyLong())).thenReturn(galleryDto);
 
-        mockMvc.perform(get(BASE_URL + "/1"))
+        mockMvc.perform(get(ROOT_GALLERY + "/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1));
 
@@ -55,11 +52,11 @@ class UserGalleryControllerTest {
     }
 
     @Test
-    @DisplayName("GET /v1/gallery/user/{userId}")
+    @DisplayName("GET " + ROOT_GALLERY + GET_GALLERY_BY_USER)
     void getUserGalleryByUserTest() throws Exception {
         when(galleryService.getGalleryByUserId(anyLong())).thenReturn(galleryDto);
 
-        mockMvc.perform(get(BASE_URL + "/user/1"))
+        mockMvc.perform(get(ROOT_GALLERY + "/user/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1));
 
@@ -67,18 +64,16 @@ class UserGalleryControllerTest {
     }
 
     @Test
-    @DisplayName("PUT /v1/gallery")
+    @DisplayName("PUT " + ROOT_GALLERY + UPDATE_GALLERY)
     void updateGalleryTitleTest() throws Exception {
-        when(galleryService.updateGalleryTitle(any())).thenReturn(galleryDto);
+        when(galleryService.updateGalleryTitle(anyLong(), anyString())).thenReturn(galleryDto);
 
-        String requestBody = objectMapper.writeValueAsString(galleryDto);
-        mockMvc.perform(put(BASE_URL)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
+        mockMvc.perform(put(ROOT_GALLERY + "/update/1")
+                        .param("title", "title"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").value("title"));
 
-        verify(galleryService, times(1)).updateGalleryTitle(any());
+        verify(galleryService, times(1)).updateGalleryTitle(anyLong(), anyString());
     }
 
 }
