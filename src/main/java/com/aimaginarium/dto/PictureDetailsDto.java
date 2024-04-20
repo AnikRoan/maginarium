@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @NoArgsConstructor
 public class PictureDetailsDto {
-
     private Long id;
     private String title;
     private String prompt;

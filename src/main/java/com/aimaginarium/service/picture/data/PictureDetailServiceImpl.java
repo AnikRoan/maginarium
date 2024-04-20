@@ -12,6 +12,8 @@ import com.aimaginarium.service.picture.PictureDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 import static java.lang.String.format;
 
 @Service
@@ -24,7 +26,10 @@ public class PictureDetailServiceImpl implements PictureDetailsService {
     public void updateDetails(PictureDetailsDto pictureDetailsDto) {
         Picture picture = pictureRepository.findById(pictureDetailsDto.getId()).orElseThrow(()
                 -> new PictureNotFoundException(format(ErrorMessage.PICTURE_NOT_FOUND, pictureDetailsDto.getId())));
-        if (picture.getPictureDetails() != null) {
+        if (picture.isDeletedFlag()) {
+            throw new PictureNotFoundException(format(ErrorMessage.PICTURE_DELETED, pictureDetailsDto.getId()));
+        }
+        if (Objects.nonNull(picture.getPictureDetails())) {
             buildNewDetails(pictureDetailsDto, picture);
 
         } else {
@@ -33,30 +38,29 @@ public class PictureDetailServiceImpl implements PictureDetailsService {
             pictureDetails.setPicture(picture);
             picture.setPictureDetails(pictureDetails);
         }
-
         pictureRepository.save(picture);
     }
 
     private void buildNewDetails(PictureDetailsDto pictureDetailsDto, Picture picture) {
-        if (pictureDetailsDto.getTitle() != null) {
+        if (Objects.nonNull(pictureDetailsDto.getTitle())) {
             picture.getPictureDetails().setTitle(pictureDetailsDto.getTitle());
         }
-        if (pictureDetailsDto.getPrompt() != null) {
+        if (Objects.nonNull(pictureDetailsDto.getPrompt())) {
             picture.getPictureDetails().setPrompt(pictureDetailsDto.getPrompt());
         }
-        if (pictureDetailsDto.getStyles() != null) {
+        if (Objects.nonNull(pictureDetailsDto.getStyles())) {
             picture.getPictureDetails().setStyles(pictureDetailsDto.getStyles());
         }
-        if (pictureDetailsDto.getWidth() != null) {
+        if (Objects.nonNull(pictureDetailsDto.getWidth())) {
             picture.getPictureDetails().setWidth(pictureDetailsDto.getWidth());
             picture.getPictureDetails().setHeight(setPictureHeight(pictureDetailsDto.getWidth()));
         }
 
 
     }
+
     public static int setPictureHeight(int width) {
-       int height  = (int) Math.round((double)width * 4 / 3);
-        return height;
+        return (int) Math.round((double) width * 4 / 3);
     }
 
 

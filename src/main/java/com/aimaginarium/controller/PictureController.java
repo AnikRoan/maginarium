@@ -19,7 +19,6 @@ public class PictureController {
     private final PictureService pictureService;
     private final PictureDetailsService pictureDetailsService;
 
-
     @GetMapping(GET_PICTURE)
     public ResponseEntity<PictureDto> getPictureById(@PathVariable("id") final Long id) {
         PictureDto pictureDto = pictureService.getPictureById(id);
@@ -31,7 +30,6 @@ public class PictureController {
         List<PictureDto> pictureDtos = pictureService.getAllPictures();
         return ResponseEntity.ok(pictureDtos);
     }
-
 
     @PostMapping(SAVE_PICTURE)
     public ResponseEntity<PictureDto> savePictureAndDetails(@RequestBody final PictureDto dto) {

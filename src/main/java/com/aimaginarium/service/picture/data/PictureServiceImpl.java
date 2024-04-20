@@ -33,14 +33,14 @@ public class PictureServiceImpl implements PictureService {
     public void updatePicture(final PictureDto pictureDto) {
         Picture picture = pictureRepository.findById(pictureDto.getId()).orElseThrow(()
                 -> new PictureNotFoundException(format(ErrorMessage.PICTURE_NOT_FOUND, pictureDto.getId())));
+        if (pictureDto.isDeletedFlag()) {
+            throw new PictureNotFoundException(format(ErrorMessage.PICTURE_UPDATE_EXCEPTION, pictureDto.getId()));
+        }
         if (pictureDto.getS3Link() != null) {
             picture.setS3Link(pictureDto.getS3Link());
         }
         if (pictureDto.isPrivateFlag()) {
             picture.setPrivateFlag(true);
-        }
-        if (pictureDto.isDeletedFlag()) {
-            picture.setDeletedFlag(true);
         }
 
         pictureRepository.save(picture);
