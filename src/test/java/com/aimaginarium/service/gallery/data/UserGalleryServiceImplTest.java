@@ -2,6 +2,7 @@ package com.aimaginarium.service.gallery.data;
 
 import com.aimaginarium.dto.UserDto;
 import com.aimaginarium.dto.UserGalleryDto;
+import com.aimaginarium.exception.GalleryNotFoundException;
 import com.aimaginarium.mapper.UserGalleryMapper;
 import com.aimaginarium.mapper.UserMapper;
 import com.aimaginarium.model.User;
@@ -107,7 +108,7 @@ class UserGalleryServiceImplTest {
     @DisplayName("Get Gallery By ID Test")
     void getUserGalleryByIdTest() {
         when(galleryRepository.findById(anyLong())).thenReturn(Optional.of(gallery));
-        when(galleryRepository.findById(null)).thenThrow(EntityNotFoundException.class);
+        when(galleryRepository.findById(0L)).thenThrow(GalleryNotFoundException.class);
         when(galleryMapper.toDto(any(UserGallery.class))).thenReturn(galleryDto);
 
         UserGalleryDto recievedUserGalleryDto = userGalleryService.getGalleryById(ID);
@@ -116,7 +117,7 @@ class UserGalleryServiceImplTest {
         assertEquals(galleryDto.id(), recievedUserGalleryDto.id());
         assertEquals(galleryDto.title(), recievedUserGalleryDto.title());
         assertEquals(galleryDto.createdAt(), recievedUserGalleryDto.createdAt());
-        assertThrows(EntityNotFoundException.class, () -> userGalleryService.getGalleryById(null));
+        assertThrows(GalleryNotFoundException.class, () -> userGalleryService.getGalleryById(0L));
     }
 
 
