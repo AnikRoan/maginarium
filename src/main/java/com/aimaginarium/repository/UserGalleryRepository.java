@@ -7,6 +7,6 @@ import java.util.Optional;
 
 public interface UserGalleryRepository extends JpaRepository<UserGallery, Long> {
 
-    Optional<UserGallery> findUserGalleryByUser_Id(Long userId);
+    Optional<UserGallery> findUserGalleryByUserId(Long userId);
 
 }
