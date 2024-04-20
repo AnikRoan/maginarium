@@ -35,26 +35,22 @@ public class PictureController {
     public ResponseEntity<PictureDto> savePictureAndDetails(@RequestBody final PictureDto dto) {
         pictureService.savePicture(dto);
         return ResponseEntity.ok(dto);
-
     }
 
     @DeleteMapping(DELETE_PICTURE)
     public void deletePicture(@PathVariable("id") final Long id) {
         pictureService.deletePicture(id);
-
     }
 
     @PutMapping(UPDATE_PICTURE)
     public ResponseEntity<PictureDto> updatePicture(@RequestBody final PictureDto dto) {
         pictureService.updatePicture(dto);
         return ResponseEntity.ok(pictureService.getPictureById(dto.getId()));
-
     }
 
     @PutMapping(UPDATE_PICTURE_DETAILS)
     public void updatePictureDetails(@RequestBody final PictureDetailsDto pictureDetailsDto) {
         pictureDetailsService.updateDetails(pictureDetailsDto);
-
     }
 
 

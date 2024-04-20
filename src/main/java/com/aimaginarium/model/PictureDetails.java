@@ -1,10 +1,12 @@
 package com.aimaginarium.model;
 
+import com.aimaginarium.exception.ErrorMessage;
 import jakarta.persistence.*;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.validator.constraints.Range;
+
 
 
 import java.time.LocalDateTime;
@@ -30,7 +32,7 @@ public class PictureDetails {
     @Column(name = "width")
     @NotNull
     @Range(min = 128, max = 2048,
-            message = "Width should be between 128 and 2048")
+            message = ErrorMessage.WIDTH_RANGE_MESSAGE)
     private Integer width;
 
     @Column(name = "height")

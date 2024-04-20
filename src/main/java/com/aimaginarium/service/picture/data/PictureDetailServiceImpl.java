@@ -19,29 +19,25 @@ import static java.lang.String.format;
 @Service
 @RequiredArgsConstructor
 public class PictureDetailServiceImpl implements PictureDetailsService {
-    private final PictureDetailsMapper pictureDetailsMapper;
     private final PictureRepository pictureRepository;
 
     @Override
-    public void updateDetails(PictureDetailsDto pictureDetailsDto) {
+    public void updateDetails(final PictureDetailsDto pictureDetailsDto) {
         Picture picture = pictureRepository.findById(pictureDetailsDto.getId()).orElseThrow(()
                 -> new PictureNotFoundException(format(ErrorMessage.PICTURE_NOT_FOUND, pictureDetailsDto.getId())));
         if (picture.isDeletedFlag()) {
-            throw new PictureNotFoundException(format(ErrorMessage.PICTURE_DELETED, pictureDetailsDto.getId()));
+            throw new PictureNotFoundException(format(ErrorMessage.PICTURE_DELETED, picture.getId()));
         }
-        if (Objects.nonNull(picture.getPictureDetails())) {
-            buildNewDetails(pictureDetailsDto, picture);
+        if (picture.getPictureDetails() == null) {
+            throw new PictureNotFoundException(format(ErrorMessage.PICTURE_DETAILS_NOT_FOUND, pictureDetailsDto.getId()));
 
         } else {
-            PictureDetails pictureDetails = pictureDetailsMapper.toEntity(pictureDetailsDto);
-            pictureDetails.setId(picture.getId());
-            pictureDetails.setPicture(picture);
-            picture.setPictureDetails(pictureDetails);
+            updateDetails(pictureDetailsDto, picture);
         }
         pictureRepository.save(picture);
     }
 
-    private void buildNewDetails(PictureDetailsDto pictureDetailsDto, Picture picture) {
+    private void updateDetails(final PictureDetailsDto pictureDetailsDto, Picture picture) {
         if (Objects.nonNull(pictureDetailsDto.getTitle())) {
             picture.getPictureDetails().setTitle(pictureDetailsDto.getTitle());
         }
@@ -55,13 +51,10 @@ public class PictureDetailServiceImpl implements PictureDetailsService {
             picture.getPictureDetails().setWidth(pictureDetailsDto.getWidth());
             picture.getPictureDetails().setHeight(setPictureHeight(pictureDetailsDto.getWidth()));
         }
-
-
     }
 
     public static int setPictureHeight(int width) {
         return (int) Math.round((double) width * 4 / 3);
     }
-
 
 }
