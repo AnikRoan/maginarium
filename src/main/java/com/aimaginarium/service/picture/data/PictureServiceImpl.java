@@ -1,8 +1,8 @@
-package com.aimaginarium.service.data;
+package com.aimaginarium.service.picture.data;
 
-import com.aimaginarium.dto.DetailsAndPictureDto;
-import com.aimaginarium.dto.PictureDetailsDto;
 import com.aimaginarium.dto.PictureDto;
+import com.aimaginarium.exception.ErrorMessage;
+import com.aimaginarium.exception.PictureNotFoundException;
 import com.aimaginarium.mapper.PictureDetailsMapper;
 import com.aimaginarium.mapper.PictureMapper;
 
@@ -10,13 +10,16 @@ import com.aimaginarium.model.Picture;
 import com.aimaginarium.model.PictureDetails;
 import com.aimaginarium.repository.PictureDetailsRepository;
 import com.aimaginarium.repository.PictureRepository;
-import com.aimaginarium.service.PictureService;
+import com.aimaginarium.service.picture.PictureService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static com.aimaginarium.service.picture.data.PictureDetailServiceImpl.setPictureHeight;
+import static java.lang.String.format;
 
 @Service
 @RequiredArgsConstructor
@@ -27,15 +30,16 @@ public class PictureServiceImpl implements PictureService {
     private final PictureDetailsMapper pictureDetailsMapper;
 
     @Override
-    public void updatePicture(PictureDto pictureDto, Long id) {
-        Picture picture = pictureRepository.findById(id).orElseThrow(() -> new RuntimeException("Picture not found"));
+    public void updatePicture(final PictureDto pictureDto) {
+        Picture picture = pictureRepository.findById(pictureDto.getId()).orElseThrow(()
+                -> new PictureNotFoundException(format(ErrorMessage.PICTURE_NOT_FOUND, pictureDto.getId())));
         if (pictureDto.getS3Link() != null) {
             picture.setS3Link(pictureDto.getS3Link());
         }
         if (pictureDto.isPrivateFlag()) {
             picture.setPrivateFlag(true);
         }
-        if(pictureDto.isDeletedFlag()) {
+        if (pictureDto.isDeletedFlag()) {
             picture.setDeletedFlag(true);
         }
 
@@ -43,11 +47,12 @@ public class PictureServiceImpl implements PictureService {
     }
 
 
-
     @Override
-    public PictureDto getPictureById(Long id) {
-        Picture picture = pictureRepository.findById(id).orElseThrow(() -> new RuntimeException("Picture not found"));
-        PictureDetails pictureDetails = pictureDetailsRepository.findById(picture.getId()).orElse(null);
+    public PictureDto getPictureById(final Long id) {
+        Picture picture = pictureRepository.findById(id).orElseThrow(()
+                -> new PictureNotFoundException(format(ErrorMessage.PICTURE_NOT_FOUND, id)));
+        PictureDetails pictureDetails = pictureDetailsRepository.findById(picture.getId()).orElseThrow(()
+                -> new PictureNotFoundException(format(ErrorMessage.PICTURE_DETAILS_NOT_FOUND, id)));
         PictureDto pictureDto = pictureMapper.toDto(picture);
         if (pictureDetails != null) {
             pictureDto.setPictureDetailsDto(pictureDetailsMapper.toDto(pictureDetails));
@@ -60,30 +65,26 @@ public class PictureServiceImpl implements PictureService {
     public List<PictureDto> getAllPictures() {
         List<PictureDto> pictureDtos = pictureMapper.toDtos(pictureRepository.findAll());
         for (PictureDto dto : pictureDtos) {
-            dto.setPictureDetailsDto(pictureDetailsMapper.toDto(pictureDetailsRepository.findById(dto.getId()).orElse(null)));
+            dto.setPictureDetailsDto(pictureDetailsMapper.toDto(pictureDetailsRepository.findById(dto.getId()).orElseThrow(()
+                    -> new PictureNotFoundException(format(ErrorMessage.PICTURE_DETAILS_NOT_FOUND, dto.getId())))));
         }
         return pictureDtos;
     }
 
 
     @Override
-    public void savePictureAndDetails(DetailsAndPictureDto detailsAndPictureDto) {
-        PictureDto pictureDto = detailsAndPictureDto.getPictureDto();
-        PictureDetailsDto pictureDetailsDto = detailsAndPictureDto.getPictureDetailsDto();
-        pictureDetailsDto.setPictureHeight();
-        pictureDetailsDto.setCreatedAt(LocalDateTime.now());
-
-        Picture picture = pictureMapper.toEntity(pictureDto);
-        PictureDetails pictureDetails = pictureDetailsMapper.toEntity(pictureDetailsDto);
+    public void savePicture(final PictureDto dto) {
+        dto.getPictureDetailsDto().setHeight(setPictureHeight(dto.getPictureDetailsDto().getWidth()));
+        dto.getPictureDetailsDto().setCreatedAt(LocalDateTime.now());
+        Picture picture = pictureMapper.toEntity(dto);
+        PictureDetails pictureDetails = pictureDetailsMapper.toEntity(dto.getPictureDetailsDto());
         picture.setPictureDetails(pictureDetails);
         pictureDetails.setPicture(picture);
         pictureRepository.save(picture);
-
-
     }
 
     @Override
-    public void deletePicture(Long id) {
+    public void deletePicture(final Long id) {
         pictureRepository.deleteById(id);
 
     }

@@ -28,7 +28,7 @@ public class Picture {
     @OneToOne(mappedBy = "picture", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private PictureDetails pictureDetails;
 
-    @ManyToOne (fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "gallery_id")
     private UserGallery userGallery;
 }

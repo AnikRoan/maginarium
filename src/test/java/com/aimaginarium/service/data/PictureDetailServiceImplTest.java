@@ -6,6 +6,7 @@ import com.aimaginarium.mapper.PictureDetailsMapper;
 import com.aimaginarium.model.Picture;
 import com.aimaginarium.model.PictureDetails;
 import com.aimaginarium.repository.PictureRepository;
+import com.aimaginarium.service.picture.data.PictureDetailServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +16,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -34,6 +34,7 @@ class PictureDetailServiceImplTest {
     private PictureDetails mockPictureDetails;
     private PictureDto pictureDto;
     private PictureDetailsDto pictureDetailsDto;
+
     @BeforeEach
     public void init() {
         pictureDto = new PictureDto();
@@ -55,7 +56,7 @@ class PictureDetailServiceImplTest {
         when(mockPictureRepository.findById(id)).thenReturn(Optional.of(mockPicture));
         when(mockPictureDetailsMapper.toEntity(pictureDetailsDto)).thenReturn(mockPictureDetails);
 
-        pictureService.updateDetails(pictureDetailsDto, id);
+        pictureService.updateDetails(pictureDetailsDto);
 
         verify(mockPictureRepository).findById(id);
         verify(mockPictureDetailsMapper).toEntity(pictureDetailsDto);

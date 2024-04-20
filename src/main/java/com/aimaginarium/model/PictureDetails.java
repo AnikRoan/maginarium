@@ -1,9 +1,11 @@
 package com.aimaginarium.model;
 
 import jakarta.persistence.*;
+
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.validator.constraints.Range;
+
 
 import java.time.LocalDateTime;
 
@@ -26,10 +28,12 @@ public class PictureDetails {
     private String prompt;
 
     @Column(name = "width")
+    @NotNull
+    @Range(min = 128, max = 2048,
+            message = "Width should be between 128 and 2048")
     private Integer width;
 
     @Column(name = "height")
-
     private Integer height;
 
     @Column(name = "styles")

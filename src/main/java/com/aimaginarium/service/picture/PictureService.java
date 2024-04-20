@@ -1,13 +1,14 @@
-package com.aimaginarium.service;
+package com.aimaginarium.service.picture;
 
-import com.aimaginarium.dto.DetailsAndPictureDto;
 import com.aimaginarium.dto.PictureDto;
 
 import java.util.List;
 
 public interface PictureService {
-     void savePictureAndDetails(DetailsAndPictureDto detailsAndPictureDto);
-    void updatePicture(PictureDto pictureDto,Long id);
+    void savePicture(PictureDto pictureDto);
+
+    void updatePicture(PictureDto pictureDto);
+
     PictureDto getPictureById(Long id);
 
     List<PictureDto> getAllPictures();

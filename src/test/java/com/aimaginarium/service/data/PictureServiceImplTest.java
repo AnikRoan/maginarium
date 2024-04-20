@@ -1,7 +1,6 @@
 package com.aimaginarium.service.data;
 
 
-import com.aimaginarium.dto.DetailsAndPictureDto;
 import com.aimaginarium.dto.PictureDetailsDto;
 import com.aimaginarium.dto.PictureDto;
 import com.aimaginarium.mapper.PictureDetailsMapper;
@@ -10,6 +9,7 @@ import com.aimaginarium.model.Picture;
 import com.aimaginarium.model.PictureDetails;
 import com.aimaginarium.repository.PictureDetailsRepository;
 import com.aimaginarium.repository.PictureRepository;
+import com.aimaginarium.service.picture.data.PictureServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -60,8 +60,9 @@ class PictureServiceImplTest {
         pictureDetailsDto.setId(id);
         pictureDetailsDto.setTitle("title");
         pictureDetailsDto.setPrompt("prompt");
-        pictureDetailsDto.setWidth(1);
+        pictureDetailsDto.setWidth(100);
         pictureDetailsDto.setStyles("styles");
+
     }
 
 
@@ -79,6 +80,7 @@ class PictureServiceImplTest {
 
         assertEquals(pictureDto, result);
     }
+
     @Test
     void pictureNotFoundTest() {
         when(mockPictureRepository.findById(anyLong())).thenReturn(Optional.empty());
@@ -112,7 +114,7 @@ class PictureServiceImplTest {
     void updatePictureTest() {
         when(mockPictureRepository.findById(id)).thenReturn(Optional.of(mockPicture));
 
-        pictureServiceImpl.updatePicture(pictureDto, id);
+        pictureServiceImpl.updatePicture(pictureDto);
 
         verify(mockPictureRepository).findById(id);
         verify(mockPicture).setS3Link(pictureDto.getS3Link());
@@ -122,19 +124,17 @@ class PictureServiceImplTest {
 
 
     @Test
-    void saveDetailsAndPictureTest() {
+    void savePictureTest() {
         when(mockPictureMapper.toEntity(pictureDto)).thenReturn(mockPicture);
         when(mockPictureDetailsMapper.toEntity(pictureDetailsDto)).thenReturn(mockPictureDetails);
 
-        DetailsAndPictureDto detailsAndPictureDto = new DetailsAndPictureDto(pictureDto, pictureDetailsDto);
-
-        pictureServiceImpl.savePictureAndDetails(detailsAndPictureDto);
+        pictureDto.setPictureDetailsDto(pictureDetailsDto);
+        pictureServiceImpl.savePicture(pictureDto);
 
         verify(mockPictureMapper).toEntity(pictureDto);
         verify(mockPictureDetailsMapper).toEntity(pictureDetailsDto);
         verify(mockPicture).setPictureDetails(mockPictureDetails);
         verify(mockPictureDetails).setPicture(mockPicture);
-        verify(mockPictureRepository).save(mockPicture);
 
 
     }

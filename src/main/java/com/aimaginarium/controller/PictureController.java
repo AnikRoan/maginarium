@@ -1,56 +1,61 @@
 package com.aimaginarium.controller;
 
-import com.aimaginarium.dto.DetailsAndPictureDto;
 import com.aimaginarium.dto.PictureDetailsDto;
 import com.aimaginarium.dto.PictureDto;
-import com.aimaginarium.service.PictureDetailsService;
-import com.aimaginarium.service.PictureService;
+import com.aimaginarium.service.picture.PictureDetailsService;
+import com.aimaginarium.service.picture.PictureService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.aimaginarium.utils.PictureEndpointUris.*;
+
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("v1/picture")
+@RequestMapping(ROOT_PICTURE)
 public class PictureController {
     private final PictureService pictureService;
     private final PictureDetailsService pictureDetailsService;
 
 
-    @GetMapping("/get/{id}")
-    public ResponseEntity<PictureDto> getPictureById(@PathVariable("id") Long id) {
+    @GetMapping(GET_PICTURE)
+    public ResponseEntity<PictureDto> getPictureById(@PathVariable("id") final Long id) {
         PictureDto pictureDto = pictureService.getPictureById(id);
         return ResponseEntity.ok(pictureDto);
     }
 
-    @GetMapping("/all")
+    @GetMapping(GET_ALL_PICTURES)
     public ResponseEntity<List<PictureDto>> getAllPictures() {
         List<PictureDto> pictureDtos = pictureService.getAllPictures();
         return ResponseEntity.ok(pictureDtos);
     }
 
 
-    @PostMapping("/save_picture_and_details")
-    public void savePictureAndDetails(@RequestBody DetailsAndPictureDto detailsAndPictureDto) {
-        pictureService.savePictureAndDetails(detailsAndPictureDto);
+    @PostMapping(SAVE_PICTURE)
+    public ResponseEntity<PictureDto> savePictureAndDetails(@RequestBody final PictureDto dto) {
+        pictureService.savePicture(dto);
+        return ResponseEntity.ok(dto);
 
     }
 
-    @DeleteMapping("/delete/{id}")
-    public void deletePicture(@PathVariable("id") Long id) {
+    @DeleteMapping(DELETE_PICTURE)
+    public void deletePicture(@PathVariable("id") final Long id) {
         pictureService.deletePicture(id);
 
     }
-    @PutMapping("/update/{id}")
-    public void updatePicture(@RequestBody PictureDto dto, @PathVariable("id") Long id) {
-        pictureService.updatePicture(dto, id);
+
+    @PutMapping(UPDATE_PICTURE)
+    public ResponseEntity<PictureDto> updatePicture(@RequestBody final PictureDto dto) {
+        pictureService.updatePicture(dto);
+        return ResponseEntity.ok(pictureService.getPictureById(dto.getId()));
 
     }
-    @PutMapping("/update_details/{id}")
-    public void updatePictureDetails(@RequestBody PictureDetailsDto pictureDetailsDto, @PathVariable("id") Long id) {
-        pictureDetailsService.updateDetails(pictureDetailsDto, id);
+
+    @PutMapping(UPDATE_PICTURE_DETAILS)
+    public void updatePictureDetails(@RequestBody final PictureDetailsDto pictureDetailsDto) {
+        pictureDetailsService.updateDetails(pictureDetailsDto);
 
     }
 
