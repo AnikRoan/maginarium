@@ -102,7 +102,7 @@
 
         <!--        MISCELLANEOUS-->
         <module name="ArrayTypeStyle"/>
-        <module name="FinalParameters"/>
+<!--        <module name="FinalParameters"/>-->
         <module name="TodoComment"/>
         <module name="UpperEll"/>
 
@@ -121,7 +121,7 @@
         <module name="InterfaceTypeParameterName"/>
         <module name="LambdaParameterName"/>
         <module name="LocalVariableName"/>
-<!--        <module name="MemberName"/>-->
+        <module name="MemberName"/>
         <module name="MethodName"/>
         <module name="MethodTypeParameterName"/>
         <module name="PackageName"/>
