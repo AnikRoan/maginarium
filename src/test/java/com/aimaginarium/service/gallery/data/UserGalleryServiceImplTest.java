@@ -1,15 +1,13 @@
-package com.aimaginarium.aimaginariumapp.service;
+package com.aimaginarium.service.gallery.data;
 
+import com.aimaginarium.dto.UserDto;
 import com.aimaginarium.dto.UserGalleryDto;
-import com.aimaginarium.dto.UserGalleryRequestDto;
-import com.aimaginarium.dto.UserGalleryUpdateDto;
 import com.aimaginarium.mapper.UserGalleryMapper;
-import com.aimaginarium.mapper.UserGalleryRequestMapper;
+import com.aimaginarium.mapper.UserMapper;
 import com.aimaginarium.model.User;
 import com.aimaginarium.model.UserGallery;
 import com.aimaginarium.repository.UserGalleryRepository;
-import com.aimaginarium.repository.UserRepository;
-import com.aimaginarium.service.data.UserGalleryServiceImpl;
+import com.aimaginarium.service.user.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,32 +25,37 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("UserGallery Service Tests")
-class UserGalleryServiceTest {
+class UserGalleryServiceImplTest {
 
     @Mock
     private UserGalleryRepository galleryRepository;
     @Mock
     private UserGalleryMapper galleryMapper;
     @Mock
-    private UserGalleryRequestMapper galleryRequestMapper;
+    private UserService userService;
     @Mock
-    private UserRepository userRepository;
+    private UserMapper userMapper;
 
     @InjectMocks
     private UserGalleryServiceImpl userGalleryService;
 
     private final Long ID = 1L;
+    private final String title = "title";
     private User user;
+    private UserDto userDto;
     private UserGallery gallery;
-    private UserGalleryRequestDto galleryRequestDto;
-    private UserGalleryUpdateDto galleryUpdateDto;
     private UserGalleryDto galleryDto;
 
     @BeforeEach
     void init() {
-        String title = "title";
 
         user = User.builder()
+                .id(ID)
+                .email("email")
+                .password("pass")
+                .build();
+
+        userDto = UserDto.builder()
                 .id(ID)
                 .email("email")
                 .password("pass")
@@ -61,18 +64,7 @@ class UserGalleryServiceTest {
         gallery = UserGallery.builder()
                 .id(ID)
                 .title(title)
-                .user(user)
                 .createdAt(LocalDateTime.now())
-                .build();
-
-        galleryRequestDto = UserGalleryRequestDto.builder()
-                .user(user)
-                .title(title)
-                .build();
-
-        galleryUpdateDto = UserGalleryUpdateDto.builder()
-                .id(ID)
-                .title(title)
                 .build();
 
         galleryDto = UserGalleryDto.builder()
@@ -85,15 +77,16 @@ class UserGalleryServiceTest {
     @Test
     @DisplayName("Save Gallery Test")
     void saveUserGalleryTest() {
-        when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
-        when(galleryRequestMapper.toEntity(any(UserGalleryRequestDto.class))).thenReturn(gallery);
+        when(userService.findUserById(anyLong())).thenReturn(userDto);
+        when(userMapper.toEntity(any(UserDto.class))).thenReturn(user);
+        when(galleryMapper.toEntity(any(UserGalleryDto.class))).thenReturn(gallery);
         when(galleryRepository.save(any())).thenReturn(gallery);
         when(galleryMapper.toDto(any(UserGallery.class))).thenReturn(galleryDto);
 
-        UserGalleryDto savedUserGalleryDto = userGalleryService.saveGallery(galleryRequestDto, ID);
+        UserGalleryDto savedUserGalleryDto = userGalleryService.saveGallery(galleryDto, ID);
 
         assertNotNull(savedUserGalleryDto);
-        assertEquals(galleryRequestDto.title(), savedUserGalleryDto.title());
+        assertEquals(galleryDto.title(), savedUserGalleryDto.title());
     }
 
     @Test
@@ -103,10 +96,11 @@ class UserGalleryServiceTest {
         when(galleryRepository.save(any())).thenReturn(gallery);
         when(galleryMapper.toDto(any(UserGallery.class))).thenReturn(galleryDto);
 
-        UserGalleryDto udatedUserGalleryDto = userGalleryService.updateGalleryTitle(galleryUpdateDto);
+        UserGalleryDto udatedUserGalleryDto = userGalleryService.updateGalleryTitle(ID, title);
 
         assertNotNull(udatedUserGalleryDto);
-        assertEquals(galleryUpdateDto.title(), udatedUserGalleryDto.title());
+        assertEquals(ID, udatedUserGalleryDto.id());
+        assertEquals(title, udatedUserGalleryDto.title());
     }
 
     @Test
@@ -129,8 +123,8 @@ class UserGalleryServiceTest {
     @Test
     @DisplayName("Get Gallery By User ID Test")
     void getUserGalleryByUserIdTest() {
-        when(galleryRepository.findUserGalleryByUser_Id(anyLong())).thenReturn(Optional.of(gallery));
-        when(galleryRepository.findUserGalleryByUser_Id(null)).thenThrow(EntityNotFoundException.class);
+        when(galleryRepository.findUserGalleryByUserId(anyLong())).thenReturn(Optional.of(gallery));
+        when(galleryRepository.findUserGalleryByUserId(null)).thenThrow(EntityNotFoundException.class);
         when(galleryMapper.toDto(any(UserGallery.class))).thenReturn(galleryDto);
 
         UserGalleryDto recievedUserGalleryDto = userGalleryService.getGalleryByUserId(ID);
