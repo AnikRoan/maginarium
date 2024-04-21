@@ -1,6 +1,7 @@
 package com.aimaginarium.model;
 
 import com.aimaginarium.exception.ErrorMessage;
+import com.aimaginarium.info.picture.PictureWidthSize;
 import jakarta.persistence.*;
 
 import jakarta.validation.constraints.NotNull;
@@ -31,7 +32,7 @@ public class PictureDetails {
 
     @Column(name = "width")
     @NotNull
-    @Range(min = 128, max = 2048,
+    @Range(min = PictureWidthSize.WIDTH_MIN, max = PictureWidthSize.WIDTH_MAX,
             message = ErrorMessage.WIDTH_RANGE_MESSAGE)
     private Integer width;
 

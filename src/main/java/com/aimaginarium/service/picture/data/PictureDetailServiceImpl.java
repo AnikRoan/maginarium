@@ -3,18 +3,15 @@ package com.aimaginarium.service.picture.data;
 import com.aimaginarium.dto.PictureDetailsDto;
 import com.aimaginarium.exception.ErrorMessage;
 import com.aimaginarium.exception.PictureNotFoundException;
-import com.aimaginarium.mapper.PictureDetailsMapper;
 
+import com.aimaginarium.info.picture.PictureWidthSize;
 import com.aimaginarium.model.Picture;
-import com.aimaginarium.model.PictureDetails;
 import com.aimaginarium.repository.PictureRepository;
 import com.aimaginarium.service.picture.PictureDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
-
-import static java.lang.String.format;
 
 @Service
 @RequiredArgsConstructor
@@ -24,12 +21,12 @@ public class PictureDetailServiceImpl implements PictureDetailsService {
     @Override
     public void updateDetails(final PictureDetailsDto pictureDetailsDto) {
         Picture picture = pictureRepository.findById(pictureDetailsDto.getId()).orElseThrow(()
-                -> new PictureNotFoundException(format(ErrorMessage.PICTURE_NOT_FOUND, pictureDetailsDto.getId())));
+                -> new PictureNotFoundException(ErrorMessage.PICTURE_NOT_FOUND, pictureDetailsDto.getId()));
         if (picture.isDeletedFlag()) {
-            throw new PictureNotFoundException(format(ErrorMessage.PICTURE_DELETED, picture.getId()));
+            throw new PictureNotFoundException(ErrorMessage.PICTURE_DELETED, picture.getId());
         }
         if (picture.getPictureDetails() == null) {
-            throw new PictureNotFoundException(format(ErrorMessage.PICTURE_DETAILS_NOT_FOUND, pictureDetailsDto.getId()));
+            throw new PictureNotFoundException(ErrorMessage.PICTURE_DETAILS_NOT_FOUND, picture.getId());
 
         } else {
             updateDetails(pictureDetailsDto, picture);
@@ -37,7 +34,7 @@ public class PictureDetailServiceImpl implements PictureDetailsService {
         pictureRepository.save(picture);
     }
 
-    private void updateDetails(final PictureDetailsDto pictureDetailsDto, Picture picture) {
+    private void updateDetails(final PictureDetailsDto pictureDetailsDto, final Picture picture) {
         if (Objects.nonNull(pictureDetailsDto.getTitle())) {
             picture.getPictureDetails().setTitle(pictureDetailsDto.getTitle());
         }
@@ -53,8 +50,8 @@ public class PictureDetailServiceImpl implements PictureDetailsService {
         }
     }
 
-    public static int setPictureHeight(int width) {
-        return (int) Math.round((double) width * 4 / 3);
+    public static int setPictureHeight(final int width) {
+        return (int) Math.round((double) width * PictureWidthSize.RATIO_WIDTH / PictureWidthSize.RATIO_HEIGHT);
     }
 
 }

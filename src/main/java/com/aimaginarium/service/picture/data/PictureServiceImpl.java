@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.aimaginarium.service.picture.data.PictureDetailServiceImpl.setPictureHeight;
-import static java.lang.String.format;
+
 
 @Service
 @RequiredArgsConstructor
@@ -32,9 +32,9 @@ public class PictureServiceImpl implements PictureService {
     @Override
     public void updatePicture(final PictureDto pictureDto) {
         Picture picture = pictureRepository.findById(pictureDto.getId()).orElseThrow(()
-                -> new PictureNotFoundException(format(ErrorMessage.PICTURE_NOT_FOUND, pictureDto.getId())));
+                -> new PictureNotFoundException(ErrorMessage.PICTURE_NOT_FOUND, pictureDto.getId()));
         if (pictureDto.isDeletedFlag()) {
-            throw new PictureNotFoundException(format(ErrorMessage.PICTURE_UPDATE_EXCEPTION, pictureDto.getId()));
+            throw new PictureNotFoundException(ErrorMessage.PICTURE_UPDATE_EXCEPTION, pictureDto.getId());
         }
         if (pictureDto.getS3Link() != null) {
             picture.setS3Link(pictureDto.getS3Link());
@@ -50,9 +50,9 @@ public class PictureServiceImpl implements PictureService {
     @Override
     public PictureDto getPictureById(final Long id) {
         Picture picture = pictureRepository.findById(id).orElseThrow(()
-                -> new PictureNotFoundException(format(ErrorMessage.PICTURE_NOT_FOUND, id)));
+                -> new PictureNotFoundException(ErrorMessage.PICTURE_NOT_FOUND, id));
         PictureDetails pictureDetails = pictureDetailsRepository.findById(picture.getId()).orElseThrow(()
-                -> new PictureNotFoundException(format(ErrorMessage.PICTURE_DETAILS_NOT_FOUND, id)));
+                -> new PictureNotFoundException(ErrorMessage.PICTURE_DETAILS_NOT_FOUND, id));
         PictureDto pictureDto = pictureMapper.toDto(picture);
         if (pictureDetails != null) {
             pictureDto.setPictureDetailsDto(pictureDetailsMapper.toDto(pictureDetails));
@@ -65,8 +65,9 @@ public class PictureServiceImpl implements PictureService {
     public List<PictureDto> getAllPictures() {
         List<PictureDto> pictureDtos = pictureMapper.toDtos(pictureRepository.findAll());
         for (PictureDto dto : pictureDtos) {
-            dto.setPictureDetailsDto(pictureDetailsMapper.toDto(pictureDetailsRepository.findById(dto.getId()).orElseThrow(()
-                    -> new PictureNotFoundException(format(ErrorMessage.PICTURE_DETAILS_NOT_FOUND, dto.getId())))));
+            dto.setPictureDetailsDto(pictureDetailsMapper.toDto(pictureDetailsRepository.findById(dto.getId())
+                    .orElseThrow(() -> new PictureNotFoundException(
+                            ErrorMessage.PICTURE_DETAILS_NOT_FOUND, dto.getId()))));
         }
         return pictureDtos;
     }

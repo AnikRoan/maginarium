@@ -63,6 +63,8 @@ class PictureServiceImplTest {
         pictureDetailsDto.setWidth(100);
         pictureDetailsDto.setStyles("styles");
 
+        pictureDto.setPictureDetailsDto(pictureDetailsDto);
+
     }
 
 
@@ -112,14 +114,22 @@ class PictureServiceImplTest {
 
     @Test
     void updatePictureTest() {
-        when(mockPictureRepository.findById(id)).thenReturn(Optional.of(mockPicture));
+
+        PictureDto pictureDto = new PictureDto();
+        pictureDto.setId(id);
+        pictureDto.setS3Link("newS3Link");
+        pictureDto.setPrivateFlag(true);
+        pictureDto.setDeletedFlag(false);
+
+        Picture picture = new Picture();
+        picture.setId(pictureDto.getId());
+
+        when(mockPictureRepository.findById(id)).thenReturn(Optional.of(picture));
 
         pictureServiceImpl.updatePicture(pictureDto);
 
-        verify(mockPictureRepository).findById(id);
-        verify(mockPicture).setS3Link(pictureDto.getS3Link());
-        verify(mockPicture).setPrivateFlag(pictureDto.isPrivateFlag());
-        verify(mockPicture).setDeletedFlag(pictureDto.isDeletedFlag());
+        assertEquals(pictureDto.getS3Link(), picture.getS3Link());
+        assertTrue(picture.isPrivateFlag());
     }
 
 
@@ -141,12 +151,7 @@ class PictureServiceImplTest {
 
     @Test
     void deletePictureTest() {
-        when(mockPictureRepository.findById(id)).thenReturn(Optional.of(mockPicture));
-
-        pictureServiceImpl.getPictureById(id);
         pictureServiceImpl.deletePicture(id);
-
-        verify(mockPictureRepository).findById(id);
         verify(mockPictureRepository).deleteById(id);
     }
 }

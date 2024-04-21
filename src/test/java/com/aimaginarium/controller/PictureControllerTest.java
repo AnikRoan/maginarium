@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class PictureControllerTest {
-    private final String PATH = "/v1/picture";
+    private final String PATH = "/api/v1/picture";
     private final Long id = 1L;
     private PictureDto pictureDto;
     private PictureDetailsDto pictureDetailsDto;

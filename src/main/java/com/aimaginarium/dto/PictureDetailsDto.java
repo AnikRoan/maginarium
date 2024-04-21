@@ -1,10 +1,7 @@
 package com.aimaginarium.dto;
 
 
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.hibernate.validator.constraints.Range;
-
 
 import java.time.LocalDateTime;
 
@@ -20,8 +17,6 @@ public class PictureDetailsDto {
     private Integer height;
     private String styles;
     private LocalDateTime createdAt;
-
-
 
 
 }
