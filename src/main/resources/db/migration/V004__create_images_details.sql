@@ -1,8 +1,9 @@
 CREATE TABLE images_details
 (
+    id         serial PRIMARY KEY NOT NULL,
     images_id  integer,
     title      varchar,
-    prompt      text,
+    prompt     text,
     width      integer,
     height     integer,
     styles     varchar,
