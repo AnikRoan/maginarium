@@ -1,24 +1,17 @@
 package com.aimaginarium.dto;
 
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class UserGalleryDto {
+import static com.aimaginarium.exception.ErrorMessage.TITLE_NOT_EMPTY;
 
-    private Long id;
-    private String title;
-    private Integer userId;
-    private LocalDateTime createdAt;
-    private UserDto userDto;
-    private List<PictureDto> pictures;
+@Builder
+public record UserGalleryDto(Long id,
+                             @NotEmpty(message = TITLE_NOT_EMPTY) String title,
+                             LocalDateTime createdAt,
+                             List<PictureDto> pictures) {
 
 }
