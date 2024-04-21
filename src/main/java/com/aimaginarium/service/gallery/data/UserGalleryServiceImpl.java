@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 import static com.aimaginarium.exception.ErrorMessage.*;
+import static java.util.Objects.nonNull;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -32,7 +33,7 @@ public class UserGalleryServiceImpl implements UserGalleryService {
     public UserGalleryDto saveGallery(final UserGalleryDto userGalleryDto, final Long userId) {
         User user = userMapper.toEntity(userService.findUserById(userId));
         UserGallery gallery = galleryMapper.toEntity(userGalleryDto);
-        if (user.getUserGallery() != null) {
+        if (nonNull(user.getUserGallery())) {
             throw new GalleryExistsException(GALLERY_ALREADY_EXIST, userId);
         }
         gallery.setCreatedAt(LocalDateTime.now());
