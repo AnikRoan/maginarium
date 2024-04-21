@@ -9,10 +9,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -24,9 +26,13 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
+@ActiveProfiles("h2")
 class PictureControllerTest {
+    @Value("${local.server.port}")
+    private int port;
+    private final String BASE_URL = "http://localhost:" + port;
     private final String PATH = "/api/v1/picture";
     private final Long id = 1L;
     private PictureDto pictureDto;
@@ -62,7 +68,7 @@ class PictureControllerTest {
     void getPictureById() throws Exception {
         when(mockPictureService.getPictureById(id)).thenReturn(pictureDto);
 
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get(PATH + "/get/{id}", id))
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get(BASE_URL+PATH + "/get/{id}", id))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -72,7 +78,7 @@ class PictureControllerTest {
 
     @Test
     void getAllPictures() throws Exception {
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get(PATH + "/all"))
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get(BASE_URL+PATH + "/all"))
                 .andExpect(status().isOk())
                 .andReturn();
         List<PictureDto> pictureDtos = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<List<PictureDto>>() {
@@ -84,7 +90,7 @@ class PictureControllerTest {
     void savePicture() throws Exception {
         pictureDto.setPictureDetailsDto(pictureDetailsDto);
 
-        mockMvc.perform(post(PATH + "/save_picture")
+        mockMvc.perform(post(BASE_URL+PATH + "/save_picture")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(pictureDto)))
                 .andExpect(status().isOk());
@@ -93,7 +99,7 @@ class PictureControllerTest {
 
     @Test
     void deletePicture() throws Exception {
-        mockMvc.perform(delete(PATH + "/delete/{id}", id))
+        mockMvc.perform(delete(BASE_URL+PATH + "/delete/{id}", id))
                 .andExpect(status().isOk());
 
         verify(mockPictureService, times(1)).deletePicture(id);
@@ -101,7 +107,7 @@ class PictureControllerTest {
 
     @Test
     void updatePicture() throws Exception {
-        mockMvc.perform(put(PATH + "/update")
+        mockMvc.perform(put(BASE_URL+PATH + "/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(pictureDto)))
                 .andExpect(status().isOk());
@@ -111,7 +117,7 @@ class PictureControllerTest {
 
     @Test
     void updatePictureDetails() throws Exception {
-        mockMvc.perform(put(PATH + "/update_details")
+        mockMvc.perform(put(BASE_URL+PATH + "/update_details")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(pictureDetailsDto)))
                 .andExpect(status().isOk());

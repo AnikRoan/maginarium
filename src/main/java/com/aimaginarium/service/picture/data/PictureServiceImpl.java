@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 import static com.aimaginarium.service.picture.data.PictureDetailServiceImpl.setPictureHeight;
 
@@ -36,7 +37,7 @@ public class PictureServiceImpl implements PictureService {
         if (pictureDto.isDeletedFlag()) {
             throw new PictureNotFoundException(ErrorMessage.PICTURE_UPDATE_EXCEPTION, pictureDto.getId());
         }
-        if (pictureDto.getS3Link() != null) {
+        if (Objects.nonNull(pictureDto.getS3Link())) {
             picture.setS3Link(pictureDto.getS3Link());
         }
         if (pictureDto.isPrivateFlag()) {
@@ -54,7 +55,7 @@ public class PictureServiceImpl implements PictureService {
         PictureDetails pictureDetails = pictureDetailsRepository.findById(picture.getId()).orElseThrow(()
                 -> new PictureNotFoundException(ErrorMessage.PICTURE_DETAILS_NOT_FOUND, id));
         PictureDto pictureDto = pictureMapper.toDto(picture);
-        if (pictureDetails != null) {
+        if (Objects.nonNull(pictureDetails)) {
             pictureDto.setPictureDetailsDto(pictureDetailsMapper.toDto(pictureDetails));
         }
 
