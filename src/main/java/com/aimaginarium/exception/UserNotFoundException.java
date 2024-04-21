@@ -1,7 +1,9 @@
 package com.aimaginarium.exception;
 
+import static java.lang.String.format;
+
 public class UserNotFoundException extends RuntimeException {
-    public UserNotFoundException(final String message) {
-        super(message);
+    public UserNotFoundException(final String message, final Object o) {
+        super(format(message, o));
     }
 }

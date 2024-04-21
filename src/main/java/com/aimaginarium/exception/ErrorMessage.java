@@ -1,9 +1,8 @@
 package com.aimaginarium.exception;
 
-import lombok.experimental.UtilityClass;
 
-@UtilityClass
 public class ErrorMessage {
+
     public final String PICTURE_NOT_FOUND = "Picture [%s] not found";
     public final String PICTURE_DETAILS_NOT_FOUND = "Picture details [%s] not found";
     public final String PICTURE_DELETED = "Picture [%s] is already deleted";
@@ -12,4 +11,5 @@ public class ErrorMessage {
     public final String USER_NOT_FOUND = "User [%s] not found";
     public final String USER_DETAILS_NOT_FOUND = "User details by user [%s] not found";
     public final String USER_DETAILS_BY_ID_NOT_FOUND = "User details [%s] not found";
+
 }
