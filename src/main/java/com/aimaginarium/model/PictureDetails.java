@@ -1,7 +1,14 @@
 package com.aimaginarium.model;
 
+import com.aimaginarium.exception.ErrorMessage;
+import com.aimaginarium.info.picture.PictureWidthSize;
 import jakarta.persistence.*;
+
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.validator.constraints.Range;
+
+
 
 import java.time.LocalDateTime;
 
@@ -24,6 +31,9 @@ public class PictureDetails {
     private String prompt;
 
     @Column(name = "width")
+    @NotNull
+    @Range(min = PictureWidthSize.WIDTH_MIN, max = PictureWidthSize.WIDTH_MAX,
+            message = ErrorMessage.WIDTH_RANGE_MESSAGE)
     private Integer width;
 
     @Column(name = "height")
@@ -36,6 +46,8 @@ public class PictureDetails {
     private LocalDateTime createdAt;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
     @JoinColumn(name = "images_id")
     private Picture picture;
+
 }
