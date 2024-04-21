@@ -8,4 +8,5 @@ public record ErrorMessage() {
     public static final String GALLERY_NOT_FOUND_BY_USER = "Gallery with user id=[%s] not found";
     public static final String GALLERY_NOT_FOUND = "Gallery with id=[%s] not found";
     public static final String GALLERY_ALREADY_EXIST = "Gallery already exist by user id=[%s]";
+    public static final String TITLE_NOT_EMPTY = "Title must be filled";
 }
