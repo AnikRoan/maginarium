@@ -2,41 +2,23 @@ package com.aimaginarium.utils.aspect.logger;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
-import static com.aimaginarium.utils.aspect.logger.LogColourConstant.*;
+import static com.aimaginarium.utils.aspect.logger.LogColourConstant.ANSI_RESET;
 
 @Slf4j
-@Aspect
 @Component
-public record LoggingControllerClassesAspect() {
+public class LoggerImpl implements Logger {
 
-    @Pointcut("within(com.aimaginarium.controller.*))")
-    public void controllersPointcut() {
-    }
-
-    @Before("controllersPointcut()")
-    public void logBefore(JoinPoint joinPoint) {
-        callLoggingMessage(joinPoint, " - started");
-    }
-
-    @AfterReturning(value = "controllersPointcut()", returning = "returningValue")
-    public void logAfterReturning(JoinPoint joinPoint, Object returningValue) {
-        String postfix = "ended";
-        if (returningValue != null) {
-            postfix = returningValue.getClass().getSimpleName()+ " returned";
-        }
-        callLoggingMessage(joinPoint, " - " + postfix);
-    }
-
-    private void callLoggingMessage(JoinPoint joinPoint, String postfix) {
+    @Override
+    public void callLoggingMessage(JoinPoint joinPoint, String prefix, String postfix, String colour) {
         String className = joinPoint.getTarget().getClass().getSimpleName();
         String methodName = joinPoint.getSignature().getName();
         String[] parameterNames = ((MethodSignature) joinPoint.getSignature()).getParameterNames();
         Object[] args = joinPoint.getArgs();
-        log.info(ANSI_MAGENTA + "Controller: {}.{}({}){}" + ANSI_RESET, className, methodName, argsToString(parameterNames, args), postfix);
+        log.info("{}{}" + ": {}.{}({}){}" + ANSI_RESET,
+                colour, prefix, className, methodName, argsToString(parameterNames, args), postfix);
     }
 
     private String argsToString(String[] parameterNames, Object[] args) {
