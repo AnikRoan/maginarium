@@ -17,7 +17,7 @@ public class LoggerImpl implements Logger {
         String methodName = joinPoint.getSignature().getName();
         String[] parameterNames = ((MethodSignature) joinPoint.getSignature()).getParameterNames();
         Object[] args = joinPoint.getArgs();
-        log.info("{}{}" + ": {}.{}({}){}" + ANSI_RESET,
+        log.debug("{}{}" + ": {}.{}({}){}" + ANSI_RESET,
                 colour, prefix, className, methodName, argsToString(parameterNames, args), postfix);
     }
 
