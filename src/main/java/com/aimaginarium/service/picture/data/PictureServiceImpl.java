@@ -1,5 +1,6 @@
 package com.aimaginarium.service.picture.data;
 
+import com.aimaginarium.dto.PictureDetailsDto;
 import com.aimaginarium.dto.PictureDto;
 import com.aimaginarium.exception.ErrorMessage;
 import com.aimaginarium.exception.PictureNotFoundException;

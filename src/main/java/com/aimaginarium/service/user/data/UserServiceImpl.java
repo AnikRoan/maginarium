@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(USER_DETAILS_NOT_FOUND, userId));
         if (!passwordEncoder.matches(passwordDto.oldPassword(), user.getPassword())) {
-            throw new InvalidPasswordException(INVALID_PASSWORD);
+            throw new InvalidPasswordException(USER_DETAILS_BY_ID_NOT_FOUND);
         }
         String hashedPassword = passwordEncoder.encode(passwordDto.newPassword());
         user.setPassword(hashedPassword);

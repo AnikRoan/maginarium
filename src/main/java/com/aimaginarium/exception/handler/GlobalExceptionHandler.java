@@ -1,9 +1,6 @@
 package com.aimaginarium.exception.handler;
 
-import com.aimaginarium.exception.ErrorDetails;
-import com.aimaginarium.exception.GalleryExistsException;
-import com.aimaginarium.exception.GalleryNotFoundException;
-import com.aimaginarium.exception.UserNotFoundException;
+import com.aimaginarium.exception.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +28,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({UserNotFoundException.class, GalleryNotFoundException.class,
-            GalleryExistsException.class})
+            GalleryExistsException.class, PictureNotFoundException.class})
     public ResponseEntity<ErrorDetails> handleNotFoundException(final HttpServletRequest request,
                                                                 final Exception ex) {
         return getResponseEntityErrorsMap(request.getRequestURI(), HttpStatus.BAD_REQUEST, makeMapFromException(ex));
